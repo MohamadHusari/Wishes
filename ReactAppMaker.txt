@@ -1,0 +1,11 @@
+1) new react app :
+ - npm init react-app my-wishes-app
+
+2) add this to package.json To build with React files ( src/Components + src/style
+ - "scripts": {
+    "build-css": "node-sass --include-path ./src/style --include-path ./node_modules src/style -o src/style",
+    "watch-css": "npm run build-css && node-sass --include-path ./src/style --include-path ./node_modules src/style -o src/style --watch --recursive",
+    "start": "npm-run-all -p watch-css start-js",
+    "build": "npm run build-css && react-scripts build",
+    "start-js": "react-scripts start"
+  }

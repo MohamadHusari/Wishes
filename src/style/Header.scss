@@ -1,0 +1,218 @@
+.custom-bg {
+  background-image: url("http://www.bootply.com/assets/example/bg_cloud.jpg");
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  -webkit-background-size: cover;
+}
+.header-overlay {
+  background-color: rgba(31, 31, 31, 0.75);
+  height: 100vh;
+
+  .header-content{
+    position: relative;
+    top: 30%;
+    .index-btns-col {
+      margin: 3.5rem 0;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    .header-content{
+      top: 10%;
+      .display-4 {
+        font-size: 2.5rem;
+      }
+      p {
+        font-size: 1.5rem;
+      }
+      .index-btns-col {
+        text-align: center;
+        margin: 2rem 0;
+        button{
+          margin: 0.5rem 0;
+        }
+    }
+    }
+  }
+}
+
+nav {
+    &.bg-transparent {
+      li {
+        a {
+          color: #ffffff;
+          &.dropdown-item {
+            color: #000;
+            &:hover, &.selected {
+              color: #0f6674;
+            }
+          }
+        }
+      }
+    }
+  &.sticky-top{
+    position: sticky;
+    top: 0;
+    background: rgba(0, 0, 0, .80);
+    border-color: #444;
+    z-index: 110;
+    transition: all 1s;
+    -moz-transition: all 1s;
+    -o-transition: all 1s;
+    -webkit-transition: all 1s;
+  }
+  li {
+    a,span {
+      color: #ffffff;
+      &:hover, &.selected {
+        color: #0f6674;
+      }
+    }
+  }
+  @media (max-width: 991.98px)  {
+    /* Icon 3 */
+    .icon-bar {
+      width: 22px;
+      height: 2px;
+      background-color: #B6B6B6;
+      display: block;
+      transition: all 0.2s;
+      margin-top: 4px
+    }
+
+    .navbar-toggler {
+      border: none;
+      background: transparent !important;
+
+    }
+    .navbar-toggler .top-bar {
+      transform: rotate(45deg);
+      transform-origin: 10% 10%;
+    }
+
+    .navbar-toggler .middle-bar {
+      opacity: 0;
+    }
+
+    .navbar-toggler .bottom-bar {
+      transform: rotate(-45deg);
+      transform-origin: 10% 90%;
+    }
+
+    .navbar-toggler.collapsed .top-bar {
+      transform: rotate(0);
+    }
+
+    .navbar-toggler.collapsed .middle-bar {
+      opacity: 1;
+    }
+
+    .navbar-toggler.collapsed .bottom-bar {
+      transform: rotate(0);
+    }
+
+    .slide{
+      background-image: linear-gradient(to right, rgba(0, 0, 0, 0.9) 0%, rgba(27, 27, 27, 0.9) 100%);
+      position: absolute;
+      height: calc(100vh - 56px);
+      width:0;
+      right: 0;
+      top: 100%;
+      overflow: hidden;
+      transition:  0.5s;
+    }
+    .slideshow {
+      display: flex;
+      //width: 50%;
+      @media (max-width: 991.98px) {
+        width: 35%;
+      }
+      @media (max-width: 767.98px) {
+        width: 50%;
+      }
+      z-index: 100;
+      cursor: pointer;
+      overflow-y: auto;
+      overflow-x: hidden;
+      //padding-top: 60px;
+      //background: #262626db none repeat scroll 0 0;
+      color: rgba(251, 251, 251, 0.5);
+      box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+  }
+}
+
+
+//.header-text h1 {
+//  font-size: 35px;
+//  font-weight: 300;
+//  line-height: 45px;
+//  padding-top: 30px;
+//  text-transform: uppercase;
+//}
+//.header-btns {
+//  margin-top: 200px;
+//  margin-bottom: 50px;
+//}
+//.btn-download,
+//.btn-download:focus,
+//.btn-download:active,
+//.btn-download:visited
+//{
+//
+//  background: transparent;
+//  border-color: #129CF3;
+//  padding-top: 10px;
+//  padding-bottom: 10px;
+//  padding-left: 30px;
+//  padding-right: 30px;
+//  font-size: 19px;
+//  text-transform: uppercase;
+//  border-radius: 3px;
+//  transition: all 1s;
+//  -webkit-transition: all 1s;
+//  -moz-transition: all 1s;
+//  -o-transition: all 1s;
+//}
+//.btn-download:hover {
+//  background-color: #129CF3;
+//  color: #fff;
+//}
+
+/* Small Devices And Tablets */
+@media only screen and (max-width: 768px) {
+
+  .header-iphone {
+    display: none;
+  }
+  .header-text, .header-btns {
+    text-align: center;
+  }
+}
+
+/*.center-container {*/
+/*height:100%;*/
+/*}*/
+
+/*.center-row {*/
+/*height:20em;*/
+/*background-image:url('http://www.bootply.com/assets/example/bg_cloud.jpg');*/
+/*background-size:cover;*/
+/*color:#fff;*/
+/*}*/
+
+//body {
+//  position: absolute;
+//  width: 70%;
+//  top: 100%;
+//  right: 0px;
+//  background: black;
+//  z-index: 1000;
+//  filter: opacity(70%);
+//  transition: auto 0.5s ease 0s;
+//}

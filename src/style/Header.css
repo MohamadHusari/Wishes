@@ -1,0 +1,122 @@
+.custom-bg {
+  background-image: url("http://www.bootply.com/assets/example/bg_cloud.jpg");
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  -webkit-background-size: cover; }
+
+.header-overlay {
+  background-color: rgba(31, 31, 31, 0.75);
+  height: 100vh; }
+  .header-overlay .header-content {
+    position: relative;
+    top: 30%; }
+    .header-overlay .header-content .index-btns-col {
+      margin: 3.5rem 0; }
+  @media (max-width: 767.98px) {
+    .header-overlay .header-content {
+      top: 10%; }
+      .header-overlay .header-content .display-4 {
+        font-size: 2.5rem; }
+      .header-overlay .header-content p {
+        font-size: 1.5rem; }
+      .header-overlay .header-content .index-btns-col {
+        text-align: center;
+        margin: 2rem 0; }
+        .header-overlay .header-content .index-btns-col button {
+          margin: 0.5rem 0; } }
+
+nav.bg-transparent li a {
+  color: #ffffff; }
+  nav.bg-transparent li a.dropdown-item {
+    color: #000; }
+    nav.bg-transparent li a.dropdown-item:hover, nav.bg-transparent li a.dropdown-item.selected {
+      color: #0f6674; }
+
+nav.sticky-top {
+  position: sticky;
+  top: 0;
+  background: rgba(0, 0, 0, 0.8);
+  border-color: #444;
+  z-index: 110;
+  transition: all 1s;
+  -moz-transition: all 1s;
+  -o-transition: all 1s;
+  -webkit-transition: all 1s; }
+
+nav li a, nav li span {
+  color: #ffffff; }
+  nav li a:hover, nav li a.selected, nav li span:hover, nav li span.selected {
+    color: #0f6674; }
+
+@media (max-width: 991.98px) {
+  nav {
+    /* Icon 3 */ }
+    nav .icon-bar {
+      width: 22px;
+      height: 2px;
+      background-color: #B6B6B6;
+      display: block;
+      transition: all 0.2s;
+      margin-top: 4px; }
+    nav .navbar-toggler {
+      border: none;
+      background: transparent !important; }
+    nav .navbar-toggler .top-bar {
+      transform: rotate(45deg);
+      transform-origin: 10% 10%; }
+    nav .navbar-toggler .middle-bar {
+      opacity: 0; }
+    nav .navbar-toggler .bottom-bar {
+      transform: rotate(-45deg);
+      transform-origin: 10% 90%; }
+    nav .navbar-toggler.collapsed .top-bar {
+      transform: rotate(0); }
+    nav .navbar-toggler.collapsed .middle-bar {
+      opacity: 1; }
+    nav .navbar-toggler.collapsed .bottom-bar {
+      transform: rotate(0); }
+    nav .slide {
+      background-image: linear-gradient(to right, rgba(0, 0, 0, 0.9) 0%, rgba(27, 27, 27, 0.9) 100%);
+      position: absolute;
+      height: calc(100vh - 56px);
+      width: 0;
+      right: 0;
+      top: 100%;
+      overflow: hidden;
+      transition: 0.5s; }
+    nav .slideshow {
+      display: flex;
+      z-index: 100;
+      cursor: pointer;
+      overflow-y: auto;
+      overflow-x: hidden;
+      color: rgba(251, 251, 251, 0.5);
+      box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+      text-align: center; } }
+    @media (max-width: 991.98px) and (max-width: 991.98px) {
+      nav .slideshow {
+        width: 35%; } }
+    @media (max-width: 991.98px) and (max-width: 767.98px) {
+      nav .slideshow {
+        width: 50%; } }
+
+/* Small Devices And Tablets */
+@media only screen and (max-width: 768px) {
+  .header-iphone {
+    display: none; }
+  .header-text, .header-btns {
+    text-align: center; } }
+
+/*.center-container {*/
+/*height:100%;*/
+/*}*/
+/*.center-row {*/
+/*height:20em;*/
+/*background-image:url('http://www.bootply.com/assets/example/bg_cloud.jpg');*/
+/*background-size:cover;*/
+/*color:#fff;*/
+/*}*/
