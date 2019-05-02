@@ -66,12 +66,12 @@ class Navbar extends Component {
                                     <div className="dropdown">
                                         <span id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                               aria-expanded="false" >
-                                             <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-5.jpg"
-                                                  className="rounded-circle" height="30" alt="profile avatar" /> {this.Auth.getProfile().username}
+                                             <img src={this.Auth.getProfile().avatar}
+                                                  className="rounded-circle" width="30" alt="profile avatar" /> {this.Auth.getProfile().username.length > 12 ? this.Auth.getProfile().username.substr(0,12) : this.Auth.getProfile().username}
                                             <FontAwesomeIcon icon="angle-down" className="ml-1"/>
                                         </span>
                                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <NavLink className="dropdown-item" to="/profile">{this.Auth.getProfile().username} Profile <span
+                                            <NavLink className="dropdown-item" to="/profile">{/*console.log(this.Auth.getProfile())*/} Profile <span
                                             className="sr-only">(current)</span></NavLink>
                                         </div>
                                     </div>

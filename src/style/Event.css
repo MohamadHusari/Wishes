@@ -1,9 +1,8 @@
 div.col-12.col-lg-4.pr-lg-0 {
   border-right: 1px solid #dee2e6 !important; }
-
-@media (max-width: 991.98px) {
-  div.col-12.col-lg-4.pr-lg-0 {
-    border-right: none !important; } }
+  @media (max-width: 991.98px) {
+    div.col-12.col-lg-4.pr-lg-0 {
+      border-right: none !important; } }
 
 @media (max-width: 991.98px) {
   .tab-content div {
@@ -68,10 +67,9 @@ h4.card-title {
   margin: 0 auto;
   padding: 0;
   width: 85%; }
-
-@media (max-width: 767.98px) {
-  .event-list {
-    width: 60%; } }
+  @media (max-width: 767.98px) {
+    .event-list {
+      width: 60%; } }
 
 .event-list > li {
   background-color: white;

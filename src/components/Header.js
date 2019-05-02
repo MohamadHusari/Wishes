@@ -2,10 +2,16 @@ import React, { Component } from 'react';
 import '../style/Header.css';
 import Navbar from './Navbar'
 
-
 class Header extends Component {
     // componentDidMount() {
     //     console.log(this.props);
+    // }
+    // componentDidMount() {
+    //     window.addEventListener('resize', () => {
+    //         // We execute the same script as before
+    //         let vh = window.outerHeight * 0.01;
+    //         document.documentElement.style.setProperty('--vh', `${vh}px`);
+    //     });
     // }
 
     render() {

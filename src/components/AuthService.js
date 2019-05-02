@@ -10,7 +10,7 @@ export default class AuthService {
 
     login(username, password) {
         // Get a token from api server using the fetch api
-        return this.fetch(`${this.domain}/login`, {
+        return this.fetch(true,`${this.domain}/login`, {
             method: 'POST',
             body: JSON.stringify({
                 username,
@@ -59,12 +59,13 @@ export default class AuthService {
     }
 
 
-    fetch(url, options) {
+    fetch(includeheaders, url, options) {
         // performs api calls sending the required authentication headers
-        const headers = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        };
+        const headers = {};
+        if(includeheaders === true ) {
+            headers['Accept'] = 'application/json';
+            headers['Content-Type'] = 'application/json';
+        }
 
         // Setting Authorization header
         // Authorization: Bearer xxxxxxx.xxxxxxxx.xxxxxx
@@ -84,9 +85,10 @@ export default class AuthService {
         // raises an error in case response status is not a success
         if (response.status >= 200 && response.status < 300) { // Success status lies between 200 to 300
             return response;
+        } else {
+            let error = new Error(response.statusText);
+            error.response = response;
+            throw error;
         }
-        let error = new Error(response.statusText);
-        error.response = response;
-        throw error;
     }
 }
