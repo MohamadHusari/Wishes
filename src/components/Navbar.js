@@ -16,11 +16,21 @@ class Navbar extends Component {
     }
     componentDidMount() {
         document.title = 'WixWishes';
+        console.log(this.props);
     }
+
     slideShow = ()=> {
         const {show} = this.state;
         this.setState({show:!show});
     };
+
+    shouldComponentUpdate(nextProps) {
+        const differentWord = this.props.ChangeNavWord !== nextProps.ChangeNavWord;
+        // const differentDone = this.props.done !== nextProps.done
+        // return differentTitle || differentDone;
+        return differentWord;
+    }
+
     render() {
         // console.log(this.props.location.pathname);
         return (
@@ -76,8 +86,12 @@ class Navbar extends Component {
                                         </div>
                                     </div>
                                     :
-                                    <NavLink className="nav-link" to="/login" activeClassName="selected">Login <span
-                                        className="sr-only">(current)</span></NavLink>
+                                    this.props.ChangeNavWord ?
+                                        <NavLink className="nav-link" to="/account/signup" activeClassName="selected">Sign Up<span
+                                            className="sr-only">(current)</span></NavLink>
+                                        :
+                                        <NavLink className="nav-link" to="/account/signin" activeClassName="selected">Sign In<span
+                                            className="sr-only">(current)</span></NavLink>
 
                                 }
                             </li>
