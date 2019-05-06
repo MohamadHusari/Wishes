@@ -1,0 +1,25 @@
+
+
+Show Wishes
+
+
+Request:
+{
+	EventId: String (Automatic by clicking on specific event)
+}
+
+Response:
+{
+ ok:{
+  	isExists: boolean,
+	msg: string (if not found in data base)
+	Wishes:{
+		Name: String,
+		WishMSG: String,
+		ImageURL: String
+	}
+ },
+ err: {
+   msg: string
+ }
+}

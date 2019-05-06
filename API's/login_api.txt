@@ -1,0 +1,28 @@
+
+
+*Login*
+
+(POST)
+Request:
+{
+  username,
+  password
+}
+
+
+Response:
+{
+
+ token_id: string
+ user:{
+  	isExists: boolean,
+	UserName: string,
+	FirstName: string,
+	LastName: string
+  	avatar: string,
+  	userId: number/string/token,
+ },
+ err: {
+   msg: string
+ }
+}

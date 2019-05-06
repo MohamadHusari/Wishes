@@ -1,0 +1,26 @@
+
+
+
+*Join*
+
+Request:
+{
+	DisplayName: String,
+	UserName: String,
+	Password: String,
+	Avatar: String
+}
+
+Response:
+{
+ response: {
+	 ok: {
+		isExists: boolean,
+		username: string
+		msg: string (if username is exist in data base or successfully)
+	 },
+	 err: {	
+	   msg: string
+	 }
+	}	
+}
