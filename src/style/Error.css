@@ -1,11 +1,11 @@
-h4 {
+.error-content h4 {
   color: #253858;
   margin-bottom: .8rem;
   position: relative;
   font-family: 'Raleway', sans-serif;
   font-size: 1.5rem; }
 
-p {
+.error-content .p {
   margin-top: 0;
   margin-bottom: 1rem;
   display: block;
@@ -16,28 +16,28 @@ p {
   color: #71787e;
   font-family: 'Lato', sans-serif; }
 
-.btn-primary:hover {
+.error-content .btn-primary:hover {
   color: #fff;
   background-color: #0069d9;
   border-color: #0062cc; }
 
-.btn-primary {
+.error-content .btn-primary {
   color: #fff;
   background-color: #0069d9;
   border-color: #0062cc; }
 
-.btn-round {
+.error-content .btn-round {
   border-radius: 30px !important;
   text-decoration: none; }
 
-.btn {
+.error-content.btn {
   font-size: 15px;
   font-weight: 600;
   padding: 9px 25px;
   border-width: 2px;
   box-shadow: 0 3px 8px 0 rgba(41, 49, 89, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.1); }
 
-.btn {
+.error-content .btn {
   display: inline-block;
   font-weight: 400;
   text-align: center;
@@ -54,7 +54,7 @@ p {
   border-radius: .25rem;
   transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out; }
 
-.btn:not(:disabled):not(.disabled) {
+.error-content .btn:not(:disabled):not(.disabled) {
   cursor: pointer; }
 
 /*[404 error page]
