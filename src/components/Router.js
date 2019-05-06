@@ -9,8 +9,9 @@ import PrivateRoute from './PrivateRoute';
 import EventPage from './EventPage';
 import SignUpForm from './SignUpForm';
 import SignInForm from './SignInForm';
-// import ErrorPage from './ErrorPage';
+import CheckErrorPage from './CheckErrorPage';
 import useGlobal from './store';
+
 
 
 const Router = ()=> {
@@ -22,6 +23,7 @@ const Router = ()=> {
                 <Route path="/" render={props => (<Navbar {...props} ChangeNavWord={globalState.ChangeNavWord}/>)} />
             </Switch>
             {/*<Route path="/login" component={LoginPage} />*/}
+            <Switch>
             <Route
                 path='/account'
                 render={props => (
@@ -42,9 +44,10 @@ const Router = ()=> {
             />
             <Route path="/profile" component={PrivateRoute(ProfilePage)}/>
             <Route path="/events" component={EventPage}/>
-            {/*<Route path="/err" component={ErrorPage}/>*/}
+            <Route component={CheckErrorPage}/>
+            </Switch>
         </BrowserRouter>
     );
-}
+};
 
 export default Router;
