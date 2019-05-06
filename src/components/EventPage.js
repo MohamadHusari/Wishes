@@ -56,8 +56,13 @@ class EventPage extends Component {
                             <SearchEvent searchFunc={this.searchingEvents}/>
                         </div>
                         <div className="col-12 col-lg-8 pl-lg-0">
-                            <EventSearchShow1 events={this.state.events.filter(event=> this.state.eventId ||  this.state.category || this.state.eventTitle || this.state.when || this.state.where ?
-                             event.category.includes(this.state.category) || event.eventTitle.includes(this.state.eventTitle) || event.when.includes(this.state.when) || event.where.includes(this.state.where): true)}/>
+                            <EventSearchShow1 events={this.state.events.filter(
+                                event => this.state.eventId ||  this.state.category || this.state.eventTitle || this.state.when || this.state.where ?
+                                this.state.category ? event.category.includes(this.state.category): true && 
+                                this.state.eventTitle ? event.eventTitle.includes(this.state.eventTitle): true &&
+                                this.state.when ? event.when.includes(this.state.when): true &&
+                                this.state.where ? event.where.includes(this.state.where): true:
+                            true)}/>
                         </div>
                     </div>
                 </div>
