@@ -30,12 +30,12 @@ const Router = ()=> {
                         {
                             path: "/account/signup",
                             component: SignUpForm,
-                            ChangeWordAction:globalActions.ChangeNavWordAction
+                            GlobalActions:globalActions
                         },
                         {
                             path: "/account/signin",
                             component: SignInForm,
-                            ChangeWordAction:globalActions.ChangeNavWordAction
+                            GlobalActions:globalActions
                         }
                     ]} />
                 )}

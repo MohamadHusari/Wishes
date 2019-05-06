@@ -15,7 +15,7 @@ function RouteWithSubRoutes(route) {
             path={route.path}
             render={props => (
                 // pass the sub-routes down to keep nesting
-                <route.component {...props} action={route.ChangeWordAction}/>
+                <route.component {...props} GlobalActions={route.GlobalActions}/>
             )}
         />
     );

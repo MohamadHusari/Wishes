@@ -44,7 +44,7 @@ export default class ProfilePage extends Component{
                       data-form-data="{ 'transformation': {'crop':'limit','width':512,'height':512}}"
                       onChange={this.onChange}
                />
-               <img className="img-thumbnail rounded" src={this.state.image.secure_url} alt="ourimage" />
+               <img className="img-thumbnail" src={this.state.image} alt="ourimage" />
            </>
        );
    }

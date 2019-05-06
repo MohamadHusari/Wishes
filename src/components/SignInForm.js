@@ -42,9 +42,9 @@ class SignInForm extends Component {
                 <h5 className="card-title text-center">Sign In</h5>
                 <form className="form-signin" onSubmit={this.handleFormSubmit}>
                     <div className="form-group">
-                        <label htmlFor="inputEmail">Email address</label>
-                        <input type="text" id="inputEmail" className="form-control" name="username"
-                               placeholder="Email address" required autoFocus onChange={this.handleChange} />
+                        <label htmlFor="inputUsername">Username</label>
+                        <input type="text" id="inputUsername" className="form-control" name="username"
+                               placeholder="Username" required autoFocus onChange={this.handleChange} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="inputPassword">Password</label>
@@ -62,7 +62,7 @@ class SignInForm extends Component {
                     </button>
                     <span className="d-block text-center mt-2">
                         Don't have an account
-                    <Link className="d-inline-block ml-2" to="/account/signup" onClick={() => this.props.action()}>Sign Up</Link>
+                    <Link className="d-inline-block ml-2" to="/account/signup" onClick={() => this.props.GlobalActions.ChangeNavWordAction()}>Sign Up</Link>
                     </span>
                     <hr/>
                     <button className="btn btn-lg btn-google btn-block text-uppercase"
