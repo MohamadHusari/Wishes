@@ -25,9 +25,13 @@ class SearchEvent extends Component {
                 <div className="tab-content" id="myTabContent">
                     <div className="tab-pane fade show active p-3" id="one" role="tabpanel"
                          aria-labelledby="one-tab">
-                        <h5 className="card-title">Tab Card One</h5>
-                        <p className="card-text">Some quick example text to build on the card title and make
-                            up the bulk of the card's content.</p>
+                        {/* <h5 className="card-title">Insert Event ID</h5> */}
+                        {/* <p className="card-text">Some quick example text to build on the card title and make
+                            up the bulk of the card's content.</p> */}
+                        <div className="form-group">
+                            <input type="text" id="eventId" className="form-control" name="eventId"
+                                placeholder="Event ID" required autoFocus onChange={(e)=>this.props.searchFunc(e)} />
+                        </div>
                         {/*<a href="#" className="btn btn-primary">Go somewhere</a>*/}
                     </div>
                     <div className="tab-pane fade p-3" id="two" role="tabpanel" aria-labelledby="two-tab">
