@@ -62,7 +62,7 @@ class SignInForm extends Component {
                     </button>
                     <span className="d-block text-center mt-2">
                         Don't have an account
-                    <Link className="d-inline-block ml-2" to="/account/signup" onClick={() => this.props.GlobalActions.ChangeNavWordAction()}>Sign Up</Link>
+                    <Link className="d-inline-block ml-2" to="/account/signup">Sign Up</Link>
                     </span>
                     <hr/>
                     <button className="btn btn-lg btn-google btn-block text-uppercase"
