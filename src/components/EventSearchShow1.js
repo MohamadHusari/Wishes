@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import * as api from "./API";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGooglePlusG, faTwitter, faFacebookF } from '@fortawesome/free-brands-svg-icons';
@@ -9,19 +8,7 @@ library.add(faChevronRight, faGooglePlusG, faTwitter, faFacebookF, faCheck, faEn
 
 
 class EventSearchShow1 extends Component {
-    constructor(){
-        super()
-        this.state = {
-            events: []
-        }
-    }
 
-
-    componentDidMount() {
-        this.setState({
-            events: api.getEvents()
-        })
-    }
 
     render() {
         return (
@@ -99,7 +86,7 @@ class EventSearchShow1 extends Component {
                         </div>
                     </td>
                 </tr>
-                {this.state.events.map((event, index) =>    <tr key={index} data-toggle="collapse" data-target="#demo3" className="accordion-toggle">
+                {this.props.events.map((event, index) =>    <tr key={index} data-toggle="collapse" data-target="#demo3" className="accordion-toggle">
                                                                 <th scope="row">{index}</th>
                                                                 <td>{event.category}</td>
                                                                 <td className="d-none d-lg-table-cell">{event.eventTitle}</td>
@@ -116,7 +103,6 @@ class EventSearchShow1 extends Component {
                 )}
                 </tbody>
             </table>
-            <h1>{this.state.events.category}</h1>
             </>
         );
     }
