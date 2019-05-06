@@ -1,0 +1,22 @@
+
+
+Adding Events
+
+
+Request:
+{
+  catagory: optional(string),
+  Title: optional(string),
+  at: optional(string),
+  where: optional(string)
+}
+
+Response:
+{
+ success: {
+   msg: string (if the event is existed in database successfully or not)
+ },
+ err: {
+   msg: string 
+ }
+}

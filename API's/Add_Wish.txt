@@ -1,0 +1,21 @@
+
+
+Adding Wishes
+
+
+Request:
+{
+	UserName: String(if User-> automatic),
+	WishMSG: String,
+	ImageURL: String
+}
+
+Response:
+{
+ success: {
+   msg: string (if the wish added successfully or not)
+ },
+ err: {
+   msg: string 
+ }
+}
