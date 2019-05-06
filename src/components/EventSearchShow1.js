@@ -1,14 +1,31 @@
 import React, { Component } from 'react';
-
+import * as api from "./API";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGooglePlusG, faTwitter, faFacebookF } from '@fortawesome/free-brands-svg-icons';
 import { faChevronRight, faCheck, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 library.add(faChevronRight, faGooglePlusG, faTwitter, faFacebookF, faCheck, faEnvelope);
 
+
+
 class EventSearchShow1 extends Component {
+    constructor(){
+        super()
+        this.state = {
+            events: []
+        }
+    }
+
+
+    componentDidMount() {
+        this.setState({
+            events: api.getEvents()
+        })
+    }
+
     render() {
         return (
+            <>
             <table className="table table-condensed table-responsive-sm table-hover">
                 <thead>
                 <tr>
@@ -23,7 +40,7 @@ class EventSearchShow1 extends Component {
                 <tbody>
                 <tr data-toggle="collapse" href="#event1" aria-expanded="false"
                     aria-controls="event1" className="collapsed">
-                    <th scope="row">1</th>
+                    <th scope="row">-1</th>
                     <td>Birthday</td>
                     <td className="d-none d-lg-table-cell">Today is my Birthday</td>
                     <td className="text-success">14/5</td>
@@ -82,36 +99,25 @@ class EventSearchShow1 extends Component {
                         </div>
                     </td>
                 </tr>
-                <tr data-toggle="collapse" data-target="#demo2" className="accordion-toggle">
-                    <th scope="row">2</th>
-                    <td>05 May 2013</td>
-                    <td className="d-none d-lg-table-cell">Credit Account</td>
-                    <td className="text-success">$11.00</td>
-                    <td className="text-error">Haifa</td>
-                    <td className="text-success">$161.00</td>
-                </tr>
-                <tr>
-                    <td colSpan="6" className="p-0">
-                        <div id="demo2" className="accordian-body collapse">
-                            Demo2
-                        </div>
-                    </td>
-                </tr>
-                <tr data-toggle="collapse" data-target="#demo3" className="accordion-toggle">
-                    <th scope="row">3</th>
-                    <td>05 May 2013</td>
-                    <td className="d-none d-lg-table-cell">Credit Account</td>
-                    <td className="text-success">$500.00</td>
-                    <td className="text-error">Yaffo</td>
-                    <td className="text-success">$661.00</td>
-                </tr>
-                <tr>
-                    <td colSpan="6" className="p-0">
-                        <div id="demo3" className="accordian-body collapse">Demo3</div>
-                    </td>
-                </tr>
+                {this.state.events.map((event, index) =>    <tr key={index} data-toggle="collapse" data-target="#demo3" className="accordion-toggle">
+                                                                <th scope="row">{index}</th>
+                                                                <td>{event.category}</td>
+                                                                <td className="d-none d-lg-table-cell">{event.eventTitle}</td>
+                                                                <td className="text-success">{event.when}</td>
+                                                                <td className="text-error">{event.where}</td>
+                                                                {/*<td className="text-success">{event.category}</td>*/}
+                                                                <td>
+                                                                    <a data-toggle="collapse" href="#event1" aria-expanded="false"
+                                                                       aria-controls="event1" className="collapsed">
+                                                                        <FontAwesomeIcon icon="chevron-right" className="d-block mx-auto"/>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                )}
                 </tbody>
             </table>
+            <h1>{this.state.events.category}</h1>
+            </>
         );
     }
 }
