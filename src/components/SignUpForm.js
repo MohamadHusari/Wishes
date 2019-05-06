@@ -21,7 +21,7 @@ class SignUpForm extends Component {
             this.props.history.replace('/');
     }
     componentWillUnmount() {
-        this.props.action();
+        this.props.GlobalActions.ChangeNavWordAction();
     }
     handleChange(e){
         this.setState(
@@ -96,7 +96,7 @@ class SignUpForm extends Component {
                     </button>
                     <span className="d-block text-center mt-2">
                         Have an account
-                    <Link className="d-inline-block ml-2" to="/account/signin" onClick={() => this.props.action()}>Sign In</Link>
+                    <Link className="d-inline-block ml-2" to="/account/signin" onClick={() => this.props.GlobalActions.ChangeNavWordAction()}>Sign In</Link>
                     </span>
                 </form>
             </>
