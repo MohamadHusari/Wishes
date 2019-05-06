@@ -35,9 +35,19 @@ class SearchEvent extends Component {
                         {/*<a href="#" className="btn btn-primary">Go somewhere</a>*/}
                     </div>
                     <div className="tab-pane fade p-3" id="two" role="tabpanel" aria-labelledby="two-tab">
-                        <h5 className="card-title">Tab Card Two</h5>
+                        {/* <h5 className="card-title">Tab Card Two</h5>
                         <p className="card-text">Some quick example text to build on the card title and make
-                            up the bulk of the card's content.</p>
+                            up the bulk of the card's content.</p> */}
+                        <div className="form-group">
+                            <input type="text" id="category" className="form-control mb-3" name="category"
+                                placeholder="Category" required autoFocus onChange={(e)=>this.props.searchFunc(e)} />
+                        <input type="text" id="eventTitle" className="form-control mb-3" name="eventTitle"
+                                placeholder="Event Title" required autoFocus onChange={(e)=>this.props.searchFunc(e)} />
+                        <input type="text" id="when" className="form-control mb-3" name="when"
+                                placeholder="When" required autoFocus onChange={(e)=>this.props.searchFunc(e)} />
+                        <input type="text" id="where" className="form-control mb-3" name="where"
+                                placeholder="Where" required autoFocus onChange={(e)=>this.props.searchFunc(e)} />
+                        </div>
                         {/*<a href="#" className="btn btn-primary">Go somewhere</a>*/}
                     </div>
                 </div>

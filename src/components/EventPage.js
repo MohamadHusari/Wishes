@@ -10,7 +10,12 @@ class EventPage extends Component {
         super()
         this.state = {
             events: [],
-            searchingEvents: false
+            searchingEvents: {},
+            eventId: false,
+            category: false,
+            eventTitle: false,
+            when: false,
+            where: false
         }
         this.searchingEvents = this.searchingEvents.bind(this)
     }
@@ -23,14 +28,15 @@ class EventPage extends Component {
     }
 
     searchingEvents(e){
+        console.log(e.target.id)
             if(e.target.value){
                 this.setState({
-                    searchingEvents: true
+                    [e.target.id]: e.target.value
                 })
             }
             else{
                 this.setState({
-                    searchingEvents: false
+                    [e.target.id]: false
                 })
             }
         }
@@ -50,7 +56,8 @@ class EventPage extends Component {
                             <SearchEvent searchFunc={this.searchingEvents}/>
                         </div>
                         <div className="col-12 col-lg-8 pl-lg-0">
-                            <EventSearchShow1 events={this.state.events.filter(event=> this.state.searchingEvents? event.category == 'Birthday':true)}/>
+                            <EventSearchShow1 events={this.state.events.filter(event=> this.state.eventId ||  this.state.category || this.state.eventTitle || this.state.when || this.state.where ?
+                             event.category.includes(this.state.category) || event.eventTitle.includes(this.state.eventTitle) || event.when.includes(this.state.when) || event.where.includes(this.state.where): true)}/>
                         </div>
                     </div>
                 </div>
