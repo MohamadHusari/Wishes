@@ -39,13 +39,18 @@ class EventSearchShow1 extends Component {
                 </thead>
                 <tbody>
                 {this.props.events.map((event, i) => {
+                    const currdate = new Date(event.date);
                     return (<React.Fragment key={"eventid"+event.id}>
                         <tr data-toggle="collapse" href={"#eventid"+event.id} aria-expanded="false"
                             aria-controls={"eventid"+event.id} className="collapsed">
                             <th scope="row">{event.id}</th>
                             <td>{event.category}</td>
                             <td className="d-none d-lg-table-cell">{event.title.length > 20 ? event.title.substr(0,20)+'...' : event.title}</td>
-                            <td className="text-success">{event.date.split('T')[0]}</td>
+                            <td className="text-success">{currdate.toLocaleDateString(undefined, {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric'
+                            })}}</td>
                             <td className="text-error">{event.e_where}</td>
                             <td>
                                 <a data-toggle="collapse" href={"#eventid"+event.id} aria-expanded="false"
@@ -61,19 +66,23 @@ class EventSearchShow1 extends Component {
                                     <ul className="event-list">
                                         <li>
                                             <time dateTime={event.date}>
-                                                <span className="day">{event.date.split('T')[0].split('-')[2]}</span>
-                                                <span className="month">{monthNames[(parseInt(event.date.split('T')[0].split('-')[1]) - 1)]}</span>
-                                                <span className="year">{event.date.split('T')[0].split('-')[0]}</span>
-                                                <span className="time">{event.date.split('T')[1]}</span>
+                                                <span className="day">{(''+currdate.getDay()).length === 1 ? '0'+currdate.getDay() : currdate.getDay() }</span>
+                                                <span className="month">{monthNames[currdate.getMonth() - 1]}</span>
+                                                <span className="year">{currdate.getFullYear()}</span>
+                                                <span className="time">{currdate.toLocaleTimeString(undefined, {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit',
+                                                    second: '2-digit'
+                                                })}</span>
                                             </time>
                                             <img alt="My 24th Birthday!"
                                                  src="https://farm5.staticflickr.com/4150/5045502202_1d867c8a41_q.jpg"/>
                                             <div className="info">
                                                 <h2 className="title">{event.title.length > 28 ? event.title.substr(0,28)+'...' : event.title}</h2>
                                                 <p className="desc">{event.description.length > 64 ? event.description.substr(0,64)+'...' : event.description}</p>
-                                                <ul>
-                                                    <li><Link to={"/event/"+event.id}>Show Event</Link></li>
-                                                    <li data-toggle="modal" data-target="#exampleModal">3 <FontAwesomeIcon icon="envelope"/></li>
+                                                <ul className="row d-flex">
+                                                    <li className="col"><Link to={"/event/"+event.id}>Show Event</Link></li>
+                                                    <li className="col" data-toggle="modal" data-target="#exampleModal">3 <FontAwesomeIcon icon="envelope"/></li>
                                                     {/*<li style="width:33%;">103 <span className="fa fa-envelope"></span></li>*/}
                                                 </ul>
                                             </div>
@@ -99,7 +108,11 @@ class EventSearchShow1 extends Component {
                                         </li>
                                     </ul>
                                     <div className="row justify-content-center">
-                                        <small>Posted by : {users[i].firstname + " " + users[i].lastname} - {users[i].username} on: {event.date.split('T')[1]} </small>
+                                        <small>Posted by : {users[i].firstname + " " + users[i].lastname} - {users[i].username} on: {currdate.toLocaleTimeString(undefined, {
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                            second: '2-digit'
+                                        })} </small>
                                     </div>
                                 </div>
                             </td>
