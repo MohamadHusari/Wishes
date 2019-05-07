@@ -42,9 +42,8 @@
   border-radius: 0;
   font-size: 15px;
   background: #212529b8; }
-
-.profile-img .file:hover {
-  background: #0f6674; }
+  .profile-img .file:hover {
+    background: #0f6674; }
 
 .profile-img .file input {
   position: absolute;
