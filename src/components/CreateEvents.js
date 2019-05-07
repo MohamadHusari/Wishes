@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
