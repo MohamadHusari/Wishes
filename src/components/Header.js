@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../style/Header.css';
 import Navbar from './Navbar'
+import { Link } from "react-router-dom";
 
 class Header extends Component {
     // componentDidMount() {
@@ -30,11 +31,11 @@ class Header extends Component {
                                     </div>
 
                                     <div className="col-12 index-btns-col clearfix">
-                                        <button className="btn btn-lg btn-outline-info text-white font-weight-light mr-2 mr-md-0" href="#">
-                                            Create New Event Box</button>
+                                        <Link className="btn btn-lg btn-outline-info text-white font-weight-light mr-2 mr-md-0" to="/event/add">
+                                            Create New Event Box</Link>
 
-                                        <button className="btn btn-lg btn-outline-info text-white font-weight-light float-md-right" href="#">
-                                            Add a Best Wish</button>
+                                        <Link className="btn btn-lg btn-outline-info text-white font-weight-light float-md-right" to="#">
+                                            Add a Best Wish</Link>
                                     </div>
                                 </div>
                             </div>

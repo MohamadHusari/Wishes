@@ -50,7 +50,7 @@ class EventSearchShow1 extends Component {
                                 day: '2-digit',
                                 month: '2-digit',
                                 year: 'numeric'
-                            })}}</td>
+                            })}</td>
                             <td className="text-error">{event.e_where}</td>
                             <td>
                                 <a data-toggle="collapse" href={"#eventid"+event.id} aria-expanded="false"
