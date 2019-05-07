@@ -10,19 +10,72 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 class SpecificEvent extends Component{
     constructor(){
         super();
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmitbut = this.handleSubmitbut.bind(this);
         this.Auth = new AuthService();
         this.state = {
             event: null,
             wishes: [],
-            userdetails:null
+            userdetails:null,
         };
+        this.guythataddwish = {name:null,title:null,message:null,userid:null};
         this.userprofile = null;
-        if(this.Auth.loggedIn())
+        if(this.Auth.loggedIn()) {
             this.userprofile = this.Auth.getProfile();
+            let sername = `${this.userprofile.firstname} ${this.userprofile.lastname}`;
+            this.guythataddwish['userid'] = this.userprofile.id;
+            this.guythataddwish['name'] = sername;
+        }
     }
-    componentDidMount() {
-        console.log(this.props);
+    handleChange(e){
+        this.guythataddwish[e.target.name] = e.target.value;
+    }
 
+    handleSubmitbut = (e) => {
+        e.preventDefault();
+        const {eventid} = this.props.match.params;
+        if(this.guythataddwish['userid'] !== null) {
+            this.Auth.fetch(true, `${this.Auth.domain}/event/${eventid}`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    userid:this.guythataddwish['userid'],
+                    name:this.guythataddwish['name'],
+                    title:this.guythataddwish['title'],
+                    message:this.guythataddwish['message']
+                })
+            })
+                .then(res => {
+                    if (res.sucess === false) {
+                        toast.error(res.err, {containerId: 'A'});
+                    } else {
+                        console.log(res.wish);
+                        this.setState({
+                            wishes:[res.wish].concat(this.state.wishes)
+                        })
+                    }
+                });
+        }
+        else {
+            this.Auth.fetch(true, `${this.Auth.domain}/event/${eventid}`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    name:this.guythataddwish['name'],
+                    title:this.guythataddwish['title'],
+                    message:this.guythataddwish['message']
+                })
+            })
+                .then(res => {
+                    if (res.sucess === false) {
+                        toast.error(res.err, {containerId: 'A'});
+                    } else {
+                        this.setState({
+                            wishes:[res.wish, ...this.state.wishes]
+                        })
+                    }
+                });
+        }
+    };
+    componentWillMount() {
         const {eventid} = this.props.match.params;
         this.Auth.fetch(true, `${this.Auth.domain}/event/${eventid}`, {
             method: 'GET',
@@ -40,7 +93,7 @@ class SpecificEvent extends Component{
                         userdetails: res.user
                     })
                 }
-            })
+            });
         this.Auth.fetch(true, `${this.Auth.domain}/wishes/${eventid}`, {
             method: 'GET',
         })
@@ -59,6 +112,9 @@ class SpecificEvent extends Component{
 
     render() {
         const {event,wishes,userdetails} = this.state;
+        let currdate;
+        if(event != null)
+             currdate = new Date(event.date);
         const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         return (
             <>
@@ -71,18 +127,26 @@ class SpecificEvent extends Component{
                                 <ul className="event-list">
                                     <li>
                                         <time dateTime={event.date}>
-                                            <span className="day">{event.date.split('T')[0].split('-')[2]}</span>
-                                            <span className="month">{monthNames[(parseInt(event.date.split('T')[0].split('-')[1]) - 1)]}</span>
-                                            <span className="year">{event.date.split('T')[0].split('-')[0]}</span>
-                                            <span className="time">{event.date.split('T')[1]}</span>
+                                            <span className="day">{(''+currdate.getDay()).length === 1 ? '0'+currdate.getDay() : currdate.getDay() }</span>
+                                            <span className="month">{monthNames[currdate.getMonth() - 1]}</span>
+                                            <span className="year">{currdate.getFullYear()}</span>
+                                            <span className="time">{currdate.toLocaleTimeString(undefined, {
+                                                hour: '2-digit',
+                                                minute: '2-digit',
+                                                second: '2-digit'
+                                            })}</span>
                                         </time>
                                         <img alt="My 24th Birthday!"
                                              src="https://farm5.staticflickr.com/4150/5045502202_1d867c8a41_q.jpg"/>
                                         <div className="info">
                                             <h2 className="title">{event.title.length > 28 ? event.title.substr(0,28)+'...' : event.title}</h2>
                                             <p className="desc">{event.description.length > 250 ? event.description.substr(0,250)+'...' : event.description}</p>
-                                            <ul style={{width : 'calc(100% - 40px)'}}>
-                                                <li><small>Posted by : {userdetails.firstname + " " + userdetails.lastname} - {userdetails.username}</small></li>
+                                            <ul style={{width : 'calc(100% - 40px)'}} className="row d-flex">
+                                                <li className="col" style={{cursor: 'default'}}><small>Posted by : {userdetails.firstname + " " + userdetails.lastname} - {userdetails.username} on: {currdate.toLocaleTimeString(undefined, {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit',
+                                                    second: '2-digit'
+                                                })}</small></li>
                                                 {/*<li style="width:33%;">103 <span className="fa fa-envelope"></span></li>*/}
                                             </ul>
                                         </div>
@@ -144,11 +208,16 @@ class SpecificEvent extends Component{
                         {
                             wishes.length ?
                                 wishes.map((wish) => {
+                                    let currdate = new Date(wish.date)
                                     return(
                                     <React.Fragment key={wish.id}>
-                                            <div className="col">
+                                            <div className="col-4 my-2">
                                                 <div className="card shadow">
-                                                    <kbd>{wish.date.split('T')[0]} - {wish.name}</kbd>
+                                                    <kbd>{currdate.toLocaleDateString(undefined, {
+                                                        day: '2-digit',
+                                                        month: '2-digit',
+                                                        year: 'numeric'
+                                                    })} - {wish.name}</kbd>
                                                     <div className="card-body">
                                                         <h5>{wish.title}</h5>
                                                         <small>
@@ -158,7 +227,11 @@ class SpecificEvent extends Component{
                                                     <div className="card-footer">
                                                         <p className="card-text">
                                                             <small className="text-muted">
-                                                                Posted on - {wish.date.split('T')[1]}
+                                                                Posted on - {currdate.toLocaleTimeString(undefined, {
+                                                                hour: '2-digit',
+                                                                minute: '2-digit',
+                                                                second: '2-digit'
+                                                            })}
                                                             </small>
                                                         </p>
                                                     </div>
@@ -183,13 +256,13 @@ class SpecificEvent extends Component{
                                         </button>
                                     </div>
                                     <div className="modal-body">
-                                        <form name="qryform" id="qryform">
+                                        <form name="addwishform" id="#addwishform" onSubmit={this.handleSubmitbut}>
                                             { this.userprofile === null ?
                                                 <>
                                                 <div className="form-group">
                                                     <label>From:</label>
                                                     <input type="text" className="form-control" id="name"
-                                                           placeholder="Enter Name" name="name"/>
+                                                           placeholder="Enter Name" name="name" onChange={this.handleChange}/>
                                                 </div>
                                                 </>
                                                 :
@@ -197,12 +270,12 @@ class SpecificEvent extends Component{
                                                     <fieldset disabled>
                                                     <div className="form-group">
                                                         <label>From:</label>
-                                                        <input  type="text" className="form-control" id="name" value={this.userprofile.firstname + " " + this.userprofile.lastname}
+                                                        <input  type="text" className="form-control" id="name" defaultValue={this.userprofile.firstname + " " + this.userprofile.lastname}
                                                                 placeholder="Enter Name" name="name"/>
                                                     </div>
                                                     <div className="form-group">
                                                         <label>Username:</label>
-                                                        <input type="text" className="form-control" id="username" value={this.userprofile.username}
+                                                        <input type="text" className="form-control" id="username" defaultValue={this.userprofile.username}
                                                                placeholder="Enter Email" name="username"/>
                                                     </div>
                                                     </fieldset>
@@ -212,13 +285,13 @@ class SpecificEvent extends Component{
                                             <div className="form-group">
                                                 <label>Title:</label>
                                                 <input type="text" className="form-control" id="title"
-                                                       placeholder="Enter Title" name="title"/>
+                                                       placeholder="Enter Title" name="title" onChange={this.handleChange}/>
                                             </div>
 
                                             <div className="form-group">
-                                                <label>Message:</label>
+                                                <label>Wishing you:</label>
                                                 <textarea className="form-control" id="message"
-                                                          placeholder="Enter your message" name="message"/>
+                                                          placeholder="Enter your message" name="message" onChange={this.handleChange}/>
                                             </div>
 
                                         </form>
@@ -226,7 +299,7 @@ class SpecificEvent extends Component{
                                     <div className="modal-footer">
                                         <button type="button" className="btn btn-secondary" data-dismiss="modal">Close
                                         </button>
-                                        <button type="submit" className="btn btn-primary">Submit</button>
+                                        <button type="submit" className="btn btn-primary" form="addwishform" onClick={this.handleSubmitbut}>Submit</button>
                                     </div>
                                 </div>
                             </div>
