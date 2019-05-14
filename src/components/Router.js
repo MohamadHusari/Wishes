@@ -45,7 +45,7 @@ const Router = ()=> {
                 )}
             />
             <Route path="/profile" component={PrivateRoute(ProfilePage)}/>
-            <Route path="/events" component={EventPage}/>
+            <Route exact path="/events" component={EventPage}/>
             <Route path="/event/add" component={CreateEvents}/>
             <Route path="/event/:eventid" component={SpecificEvent} />
             <Route component={CheckErrorPage}/>
