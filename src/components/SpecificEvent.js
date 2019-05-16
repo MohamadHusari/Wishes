@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import AuthService from './AuthService';
 import {toast, ToastContainer} from "react-toastify";
 import ErrorPage from './ErrorPage';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import Event from './Event';
+import AddWishModal from './AddWishModal';
+import {Button} from 'react-bootstrap';
+
 // import {Link} from "react-router-dom";
 
 
@@ -12,11 +14,13 @@ class SpecificEvent extends Component{
         super();
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmitbut = this.handleSubmitbut.bind(this);
+        this.addwishmodalClose = this.addwishmodalClose.bind(this);
         this.Auth = new AuthService();
         this.state = {
             event: null,
             wishes: [],
             userdetails:null,
+            addwishmodal:false
         };
         this.guythataddwish = {name:null,title:null,message:null,userid:null};
         this.userprofile = null;
@@ -50,8 +54,10 @@ class SpecificEvent extends Component{
                     } else {
                         console.log(res.wish);
                         this.setState({
-                            wishes:[res.wish].concat(this.state.wishes)
+                            wishes:[res.wish].concat(this.state.wishes),
+                            addwishmodal:false
                         })
+
                     }
                 });
         }
@@ -69,7 +75,8 @@ class SpecificEvent extends Component{
                         toast.error(res.err, {containerId: 'A'});
                     } else {
                         this.setState({
-                            wishes:[res.wish, ...this.state.wishes]
+                            wishes:[res.wish, ...this.state.wishes],
+                            addwishmodal:false
                         })
                     }
                 });
@@ -109,73 +116,27 @@ class SpecificEvent extends Component{
                 }
             })
     }
+    addwishmodalClose = () => this.setState({ addwishmodal: false });
 
     render() {
         const {event,wishes,userdetails} = this.state;
-        let currdate;
-        if(event != null)
-             currdate = new Date(event.date);
-        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        return (
+            return (
             <>
                 <ToastContainer enableMultiContainer containerId={'A'} position={toast.POSITION.BOTTOM_RIGHT} />
                 {event !== null ?
                     <>
-                    <div className="container mt-5">
+                    <div className="container mt-5 py-4 bg-white rounded">
                         <div className="row">
-                            <div className="col-11 m-0 p-0">
-                                <ul className="event-list">
-                                    <li>
-                                        <time dateTime={event.date}>
-                                            <span className="day">{(''+currdate.getDay()).length === 1 ? '0'+currdate.getDay() : currdate.getDay() }</span>
-                                            <span className="month">{monthNames[currdate.getMonth() - 1]}</span>
-                                            <span className="year">{currdate.getFullYear()}</span>
-                                            <span className="time">{currdate.toLocaleTimeString(undefined, {
-                                                hour: '2-digit',
-                                                minute: '2-digit',
-                                                second: '2-digit'
-                                            })}</span>
-                                        </time>
-                                        <img alt="My 24th Birthday!"
-                                             src="https://farm5.staticflickr.com/4150/5045502202_1d867c8a41_q.jpg"/>
-                                        <div className="info">
-                                            <h2 className="title">{event.title.length > 28 ? event.title.substr(0,28)+'...' : event.title}</h2>
-                                            <p className="desc">{event.description.length > 250 ? event.description.substr(0,250)+'...' : event.description}</p>
-                                            <ul style={{width : 'calc(100% - 40px)'}} className="row d-flex">
-                                                <li className="col" style={{cursor: 'default'}}><small>Posted by : {userdetails.firstname + " " + userdetails.lastname} - {userdetails.username} on: {currdate.toLocaleTimeString(undefined, {
-                                                    hour: '2-digit',
-                                                    minute: '2-digit',
-                                                    second: '2-digit'
-                                                })}</small></li>
-                                                {/*<li style="width:33%;">103 <span className="fa fa-envelope"></span></li>*/}
-                                            </ul>
-                                        </div>
-                                        <div className="social">
-                                            <ul>
-                                                <li className="facebook">
-                                                    <a href="#facebook">
-                                                        <FontAwesomeIcon icon={["fab","facebook-f"]}/>
-                                                    </a>
-                                                </li>
-                                                <li className="twitter">
-                                                    <a href="#twitter">
-                                                        <FontAwesomeIcon icon={["fab","twitter"]}/>
-                                                    </a>
-                                                </li>
-                                                <li className="google-plus">
-                                                    <a data-toggle="modal"
-                                                       data-target="#exampleModalScrollable" href="#exampleModalScrollable">
-                                                        <FontAwesomeIcon icon={faPlus}/>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                </ul>
+                            <div className="col-12 col-md-10 m-0 px-3">
+                                <Event event={event} userdetails={userdetails} mode="SpecificEvent"/>
                             </div>
-                            <div className="col m-0 p-0">
-                                <button type="button" className="mt-4 btn btn-dark rounded-pill"
-                                        data-toggle="modal" data-target="#exampleModal">Add Wish</button>
+                            <div className="col text-center">
+                                <Button
+                                    variant="dark"
+                                    className="rounded-pill mt-4"
+                                    onClick={() => this.setState({ addwishmodal: true })}>
+                                    Add Wish
+                                </Button>
                             </div>
                             <div className="modal fade" id="exampleModalScrollable" tabIndex="-1" role="dialog"
                                  aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
@@ -245,65 +206,13 @@ class SpecificEvent extends Component{
                                 </div>
                         }
                         </div>
-                        <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog"
-                             aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div className="modal-dialog modal-dialog-scrollable" role="document">
-                                <div className="modal-content">
-                                    <div className="modal-header">
-                                        <h5 className="modal-title" id="exampleModalLabel">Add Wish to Event id : {event.id}</h5>
-                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div className="modal-body">
-                                        <form name="addwishform" id="#addwishform" onSubmit={this.handleSubmitbut}>
-                                            { this.userprofile === null ?
-                                                <>
-                                                <div className="form-group">
-                                                    <label>From:</label>
-                                                    <input type="text" className="form-control" id="name"
-                                                           placeholder="Enter Name" name="name" onChange={this.handleChange}/>
-                                                </div>
-                                                </>
-                                                :
-                                                <>
-                                                    <fieldset disabled>
-                                                    <div className="form-group">
-                                                        <label>From:</label>
-                                                        <input  type="text" className="form-control" id="name" defaultValue={this.userprofile.firstname + " " + this.userprofile.lastname}
-                                                                placeholder="Enter Name" name="name"/>
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <label>Username:</label>
-                                                        <input type="text" className="form-control" id="username" defaultValue={this.userprofile.username}
-                                                               placeholder="Enter Email" name="username"/>
-                                                    </div>
-                                                    </fieldset>
-                                                </>
-                                            }
-
-                                            <div className="form-group">
-                                                <label>Title:</label>
-                                                <input type="text" className="form-control" id="title"
-                                                       placeholder="Enter Title" name="title" onChange={this.handleChange}/>
-                                            </div>
-
-                                            <div className="form-group">
-                                                <label>Wishing you:</label>
-                                                <textarea className="form-control" id="message"
-                                                          placeholder="Enter your message" name="message" onChange={this.handleChange}/>
-                                            </div>
-
-                                        </form>
-                                    </div>
-                                    <div className="modal-footer">
-                                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close
-                                        </button>
-                                        <button type="submit" className="btn btn-primary" form="addwishform" onClick={this.handleSubmitbut}>Submit</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <AddWishModal show={this.state.addwishmodal}
+                                      onHide={this.addwishmodalClose}
+                                      event={event}
+                                      userprofile={this.userprofile}
+                                      onSubmit={this.handleSubmitbut}
+                                      onChange={this.handleChange}
+                        />
                     </div>
                     </>
                     :

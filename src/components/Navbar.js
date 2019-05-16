@@ -83,6 +83,8 @@ class Navbar extends Component {
                                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <NavLink className="dropdown-item" to="/profile">{/*console.log(this.Auth.getProfile())*/} Profile <span
                                             className="sr-only">(current)</span></NavLink>
+                                            <NavLink className="dropdown-item" to="/myEvents">{/*console.log(this.Auth.getProfile())*/} My Events <span
+                                                className="sr-only">(current)</span></NavLink>
                                         </div>
                                     </div>
                                     :
