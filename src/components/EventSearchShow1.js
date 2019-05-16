@@ -12,6 +12,7 @@ class EventSearchShow1 extends Component {
     //     super();
     //
     // }
+
     shouldComponentUpdate(nextProps) {
         const differentEvents = this.props.events !== nextProps.events;
         // const differentSucess = this.props.sucess !== nextProps.sucess;

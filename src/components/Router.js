@@ -12,6 +12,7 @@ import SignInForm from './SignInForm';
 import CheckErrorPage from './CheckErrorPage';
 import SpecificEvent from './SpecificEvent';
 import CreateEvents from './CreateEvents';
+import MyEventsPage from './MyEventsPage';
 import useGlobal from './store';
 
 
@@ -44,7 +45,8 @@ const Router = ()=> {
                     ]} />
                 )}
             />
-            <Route path="/profile" component={PrivateRoute(ProfilePage)}/>
+            <Route exact path="/profile" component={PrivateRoute(ProfilePage)}/>
+            <Route exact path="/myEvents" component={PrivateRoute(MyEventsPage)}/>
             <Route exact path="/events" component={EventPage}/>
             <Route path="/event/add" component={CreateEvents}/>
             <Route path="/event/:eventid" component={SpecificEvent} />
