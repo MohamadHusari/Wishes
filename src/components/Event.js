@@ -1,19 +1,27 @@
 import React, {Component} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
-import EditEventModal from './EditEventModal'
-import AddWishModal from "./SpecificEvent";
-import {Button} from "react-bootstrap";
+import EditEventModal from './EditEventModal';
+import DeleteEventModal from './DeleteEventModal';
+import ShowMoreModal from './ShowMoreModal';
+import AuthService from "./AuthService";
 
 class Event extends Component {
     constructor() {
         super();
         this.EditEventModalClose = this.EditEventModalClose.bind(this);
+        this.DeleteEventModalClose = this.DeleteEventModalClose.bind(this);
+        this.ShowMoreModalClose = this.ShowMoreModalClose.bind(this);
         this.state = {
-            EditEventModal: false
+            EditEventModal: false,
+            DeleteEventModal: false,
+            clicked_event: null,
+            ShowMoreModal:false
         }
     }
     EditEventModalClose = () => this.setState({ EditEventModal: false });
+    DeleteEventModalClose = () => this.setState({DeleteEventModal: false});
+    ShowMoreModalClose = () => this.setState({ShowMoreModal: false});
 
     render() {
         const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -32,9 +40,9 @@ class Event extends Component {
           <>
               <ul className="event-list">
                   <li>
-                      <time dateTime={event.date}>
-                          <span className="day">{(''+currdate.getDay()).length === 1 ? '0'+currdate.getDay() : currdate.getDay() }</span>
-                          <span className="month">{monthNames[currdate.getMonth() - 1]}</span>
+                      <time dateTime={event.date.substr(0,event.date.length - 8)}>
+                          <span className="day">{(''+currdate.getDate()).length === 1 ? '0'+currdate.getDate() : currdate.getDate() }</span>
+                          <span className="month">{monthNames[currdate.getMonth()]}</span>
                           <span className="year">{currdate.getFullYear()}</span>
                           <span className="time">{currdate.toLocaleTimeString(undefined, {
                               hour: '2-digit',
@@ -57,16 +65,17 @@ class Event extends Component {
                               })}</small></li>
                               </>
                           }
-                          { (event.title.length > titlength || event.description.length > dislength) && !editmode &&
-                              <li className="col"><a data-toggle="modal" data-target="#exampleModalScrollable" href="#exampleModalScrollable">More</a></li>
+                          { !editmode &&
+                              <li className="col" onClick={() => this.setState({ShowMoreModal: true})}>Read More</li>
                           }
                           { mode !== "SpecificEvent" && !editmode &&
                               <li className="col"><Link to={"/event/" + event.id}>Show wishes</Link></li>
                           }
                           {editmode === true &&
                               <>
-                              <li className="col" onClick={() => this.setState({ EditEventModal: true })}>Edit</li>
-                              <li className="col"><Link to={"/event/"+event.id}>Delete</Link></li>
+                              <li className="col" onClick={() =>
+                                  this.setState({ EditEventModal: true, clicked_event:event.id })}>Edit</li>
+                              <li className="col" onClick={() => this.setState({DeleteEventModal: true})}>Delete</li>
                               </>
                           }
                           </ul>
@@ -96,6 +105,13 @@ class Event extends Component {
               <EditEventModal show={this.state.EditEventModal}
                               onHide={this.EditEventModalClose}
                               event={event}/>
+              <DeleteEventModal show={this.state.DeleteEventModal}
+                                onHide={this.DeleteEventModalClose}
+                                HandleDeleteButt={this.props.HandleDeleteButt}
+                                />
+              <ShowMoreModal show={this.state.ShowMoreModal}
+                             onHide={this.ShowMoreModalClose}
+                             event={event}/>
           </>
         );
     }

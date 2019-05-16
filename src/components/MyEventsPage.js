@@ -11,6 +11,7 @@ class MyEventsPage extends Component {
         super();
         this.Auth = new AuthService();
         this.onToggle = this.onToggle.bind(this);
+        this.HandleDeleteButt = this.HandleDeleteButt.bind(this);
         this.state = {
             events : [],
             toggleActive: false
@@ -19,6 +20,29 @@ class MyEventsPage extends Component {
     onToggle() {
         this.setState({ toggleActive: !this.state.toggleActive });
     }
+
+    HandleDeleteButt = () => {
+        this.Auth.fetch(true, `${this.Auth.domain}/event`, {
+            method: 'DELETE',
+            body: JSON.stringify({
+                event_id:this.state.clicked_event
+            })
+        }).then(res => {
+            if (res.sucess === false) {
+                toast.error(res.msg, {containerId: 'A'});
+            } else {
+                toast.success(res.msg, {containerId: 'A'});
+                let newevents = this.state.events;
+                for( let i = 0; i < this.newevents.length; i++){
+                    if ( newevents[i].id === this.state.clicked_event) {
+                        newevents.splice(i, 1);
+                        break;
+                    }
+                }
+                this.setState({events:newevents});
+            }
+        });
+    };
 
     componentWillMount() {
         const userdetails = this.props.user;
@@ -73,7 +97,7 @@ class MyEventsPage extends Component {
                                 events.map((event) => {
                                     return(
                                         <div className="col-6 my-2" key={event.id}>
-                                            <Event event={event} mode="MyEventsPage" editmode={this.state.toggleActive}/>
+                                            <Event event={event} mode="MyEventsPage" HandleDeleteButt={this.HandleDeleteButt} editmode={this.state.toggleActive}/>
                                         </div>
                                     )})
                                 :
