@@ -4,6 +4,13 @@ import {Modal, Button} from 'react-bootstrap';
 class EditEventModal extends Component {
     render() {
         const {event} = this.props;
+        // const currdate = new Date(event.date);
+        // const currentDate = currdate.toLocaleDateString(undefined, {
+        //     day: '2-digit',
+        //     month: '2-digit',
+        //     year: 'numeric'
+        // });
+        // const currentTime = currdate.getHours() + ':' + currdate.getMinutes();
         return (
             <>
                 <Modal
@@ -42,7 +49,7 @@ class EditEventModal extends Component {
                             </div>
                             <div className="form-group">
                                 <label htmlFor="dateevent">Date</label>
-                                <input type="date" id="dateevent" className="form-control" name="dateevent"/>
+                                <input type="datetime-local" id="dateevent" className="form-control" name="dateevent" defaultValue={event.date.substr(0,event.date.length - 8)}/>
                             </div>
                         </form>
                     </Modal.Body>

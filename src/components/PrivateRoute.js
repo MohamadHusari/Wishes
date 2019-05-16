@@ -13,7 +13,7 @@ export default function PrivateRoute(AuthComponent) {
         }
         componentWillMount() {
             if (!Auth.loggedIn()) {
-                this.props.history.replace('/login');
+                this.props.history.replace('/account/signin');
             } else {
                 try {
                     const profile = Auth.getProfile();
@@ -22,7 +22,7 @@ export default function PrivateRoute(AuthComponent) {
                     })
                 } catch (err) {
                     Auth.logout();
-                    this.props.history.replace('/login');
+                    this.props.history.replace('/account/signin');
                 }
             }
         }
