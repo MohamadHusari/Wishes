@@ -2,12 +2,23 @@ import React, { Component } from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import AuthService from './AuthService';
+import validator, { field } from './validator';
+import { Form, InputGroup, ToggleButtonGroup, ToggleButton } from "react-bootstrap";
+import { faUser, faPassport } from "@fortawesome/free-solid-svg-icons";
+
 
 class SignInForm extends Component {
     constructor() {
         super();
+        this.state = {
+            username:    field({value: '', name: 'username'}),
+            Password:  field({value: '', name: 'Password'}),
+            date:   field({value: '', name: 'date'}),
+            where:   field({value: '', name: 'where'})
+        }
         this.handleChange = this.handleChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
+        this.onInputChange = this.onInputChange.bind(this);
         this.Auth = new AuthService();
     }
     handleChange(e){
@@ -17,6 +28,18 @@ class SignInForm extends Component {
             }
         )
     }
+
+    onInputChange({ target: { name, value } }) {    
+        this.setState({
+          [name]: {
+            ...this.state[name],
+            value,
+            ...validator(value, name, this.state[name].validations)
+          }
+        });
+      }
+
+      
     handleFormSubmit(e){
         e.preventDefault();
         this.Auth.login(this.state.username,this.state.password)
@@ -41,16 +64,52 @@ class SignInForm extends Component {
             <>
                 <h5 className="card-title text-center">Sign In</h5>
                 <form className="form-signin" onSubmit={this.handleFormSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="inputUsername">Username</label>
-                        <input type="text" id="inputUsername" className="form-control" name="username"
-                               placeholder="Username" required autoFocus onChange={this.handleChange} />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="inputPassword">Password</label>
-                        <input type="password" id="inputPassword" className="form-control" name="password"
-                               placeholder="Password" required onChange={this.handleChange} />
-                    </div>
+                    <Form.Group controlId="formControlEmail">
+                        <Form.Label>Username</Form.Label>
+                        <InputGroup className="mb-3">
+                            <InputGroup.Prepend>
+                            <InputGroup.Text>
+                                <FontAwesomeIcon icon={faUser} />
+                            </InputGroup.Text>
+                            </InputGroup.Prepend>
+                            <Form.Control
+                            name="username"
+                            placeholder="Enter your mail"
+                            aria-label="Username"
+                            defaultValue={this.state.username.value}
+                            onBlur={this.onInputChange}
+                            />
+                        </InputGroup>
+                        {this.state.username.errors.map((err, i) => (
+                            <Form.Text key={i} className="text-danger">
+                            {err}
+                            </Form.Text>
+                        ))}
+                    </Form.Group>
+
+                    <Form.Group controlId="formControlEmail">
+                        <Form.Label>Password</Form.Label>
+                        <InputGroup className="mb-3">
+                            <InputGroup.Prepend>
+                            <InputGroup.Text>
+                                <FontAwesomeIcon icon={faPassport} />
+                            </InputGroup.Text>
+                            </InputGroup.Prepend>
+                            <Form.Control
+                            name="Password"
+                            type="password"
+                            placeholder="Enter your Password"
+                            aria-label="password"
+                            defaultValue={this.state.Password.value}
+                            onBlur={this.onInputChange}
+                            />
+                        </InputGroup>
+                        {this.state.Password.errors.map((err, i) => (
+                            <Form.Text key={i} className="text-danger">
+                            {err}
+                            </Form.Text>
+                        ))}
+                    </Form.Group>
 
                     <div className="custom-control custom-checkbox mb-3">
                         <input type="checkbox" className="custom-control-input" id="customCheck1"/>
