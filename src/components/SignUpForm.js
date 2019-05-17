@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import AuthService from './AuthService';
 import {Link} from "react-router-dom";
+import validator, { field } from './validator';
+import { Form, InputGroup, ToggleButtonGroup, ToggleButton } from "react-bootstrap";
+import { faUser, faPassport } from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+
 
 class SignUpForm extends Component {
     constructor() {
@@ -10,8 +15,14 @@ class SignUpForm extends Component {
         this.Auth = new AuthService();
         this.state = {
             uploading: false,
-            image: 'https://res.cloudinary.com/yallablagan/image/upload/c_thumb,w_200,g_face/v1557105634/MemberDefault_l8iaju.jpg'
+            image: 'https://res.cloudinary.com/yallablagan/image/upload/c_thumb,w_200,g_face/v1557105634/MemberDefault_l8iaju.jpg',
+            FirstName:    field({value: '', name: 'FirstName'}),
+            LastName:  field({value: '', name: 'LastName'}),
+            Password:   field({value: '', name: 'Password'}),
+            Password2:   field({value: '', name: 'Password2'}),
+            username:   field({value: '', name: 'username'})
         }
+        this.onInputChange = this.onInputChange.bind(this);
     }
     componentDidMount() {
         console.log(this.props);
@@ -30,6 +41,15 @@ class SignUpForm extends Component {
                 [e.target.name]: e.target.value
             }
         )
+    }
+    onInputChange({ target: { name, value } }) {    
+        this.setState({
+          [name]: {
+            ...this.state[name],
+            value,
+            ...validator(value, name, this.state[name].validations)
+          }
+        });
     }
     onChange = e => {
         const files = Array.from(e.target.files);
@@ -66,31 +86,127 @@ class SignUpForm extends Component {
                     </div>
                 </div>
                 <form className="form-signin" onSubmit={this.handleFormSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="inputFirstName">First Name</label>
-                        <input type="text" id="inputfirstname" className="form-control" name="firstname"
-                               placeholder="First Name" required autoFocus onChange={this.handleChange} />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="inputLastName">Last Name</label>
-                        <input type="text" id="inputlastname" className="form-control" name="lastname"
-                               placeholder="Last Name" required autoFocus onChange={this.handleChange} />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="inputUserName">Username</label>
-                        <input type="text" id="inputusername" className="form-control" name="username"
-                               placeholder="Username" required autoFocus onChange={this.handleChange} />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="inputPassword">Password</label>
-                        <input type="password" id="inputPassword" className="form-control" name="password"
-                               placeholder="Password" required onChange={this.handleChange} />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="inputverifyPassword">Verify Password</label>
-                        <input type="password" id="inptverifypassword" className="form-control" name="verifypassword"
-                               placeholder="Verify Password" required onChange={this.handleChange} />
-                    </div>
+
+                    <Form.Group controlId="formControlEmail">
+                        <Form.Label>First Name</Form.Label>
+                        <InputGroup className="mb-3">
+                            <InputGroup.Prepend>
+                            <InputGroup.Text>
+                                <FontAwesomeIcon icon={faUser} />
+                            </InputGroup.Text>
+                            </InputGroup.Prepend>
+                            <Form.Control
+                            name="FirstName"
+                            placeholder="Enter your First Name"
+                            aria-label="FirstName"
+                            defaultValue={this.state.FirstName.value}
+                            onBlur={this.onInputChange}
+                            onChange={this.handleChange}
+                            />
+                        </InputGroup>
+                        {this.state.FirstName.errors.map((err, i) => (
+                            <Form.Text key={i} className="text-danger">
+                            {err}
+                            </Form.Text>
+                        ))}
+                    </Form.Group>
+
+
+                    <Form.Group controlId="formControlEmail">
+                        <Form.Label>Last Name</Form.Label>
+                        <InputGroup className="mb-3">
+                            <InputGroup.Prepend>
+                            <InputGroup.Text>
+                                <FontAwesomeIcon icon={faUser} />
+                            </InputGroup.Text>
+                            </InputGroup.Prepend>
+                            <Form.Control
+                            name="LastName"
+                            placeholder="Enter your Last Name"
+                            aria-label="LastName"
+                            defaultValue={this.state.LastName.value}
+                            onBlur={this.onInputChange}
+                            onChange={this.handleChange}
+                            />
+                        </InputGroup>
+                        {this.state.LastName.errors.map((err, i) => (
+                            <Form.Text key={i} className="text-danger">
+                            {err}
+                            </Form.Text>
+                        ))}
+                    </Form.Group>
+
+                    <Form.Group controlId="formControlEmail">
+                        <Form.Label>User Name</Form.Label>
+                        <InputGroup className="mb-3">
+                            <InputGroup.Prepend>
+                            <InputGroup.Text>
+                                <FontAwesomeIcon icon={faUser} />
+                            </InputGroup.Text>
+                            </InputGroup.Prepend>
+                            <Form.Control
+                            name="username"
+                            type="text"
+                            placeholder="Enter Your UserName"
+                            aria-label="password2"
+                            defaultValue={this.state.username.value}
+                            onBlur={this.onInputChange}
+                            />
+                        </InputGroup>
+                        {this.state.username.errors.map((err, i) => (
+                            <Form.Text key={i} className="text-danger">
+                            {err}
+                            </Form.Text>
+                        ))}
+                    </Form.Group>
+
+                    <Form.Group controlId="formControlEmail">
+                        <Form.Label>Password</Form.Label>
+                        <InputGroup className="mb-3">
+                            <InputGroup.Prepend>
+                            <InputGroup.Text>
+                                <FontAwesomeIcon icon={faPassport} />
+                            </InputGroup.Text>
+                            </InputGroup.Prepend>
+                            <Form.Control
+                            name="Password"
+                            type="password"
+                            placeholder="Enter your Password"
+                            aria-label="password"
+                            defaultValue={this.state.Password.value}
+                            onBlur={this.onInputChange}
+                            />
+                        </InputGroup>
+                        {this.state.Password.errors.map((err, i) => (
+                            <Form.Text key={i} className="text-danger">
+                            {err}
+                            </Form.Text>
+                        ))}
+                    </Form.Group>
+
+                    <Form.Group controlId="formControlEmail">
+                        <Form.Label>Re-Enter a Password</Form.Label>
+                        <InputGroup className="mb-3">
+                            <InputGroup.Prepend>
+                            <InputGroup.Text>
+                                <FontAwesomeIcon icon={faPassport} />
+                            </InputGroup.Text>
+                            </InputGroup.Prepend>
+                            <Form.Control
+                            name="Password2"
+                            type="password2"
+                            placeholder="Verify your Password"
+                            aria-label="password2"
+                            defaultValue={this.state.Password2.value}
+                            onBlur={this.onInputChange}
+                            />
+                        </InputGroup>
+                        {this.state.Password2.errors.map((err, i) => (
+                            <Form.Text key={i} className="text-danger">
+                            {err}
+                            </Form.Text>
+                        ))}
+                    </Form.Group>
 
                     <button className="btn btn-lg btn-info btn-block text-uppercase"
                             type="submit">Create New Account
