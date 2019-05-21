@@ -13,13 +13,13 @@ class EventSearchShow1 extends Component {
     //
     // }
 
-    shouldComponentUpdate(nextProps) {
-        const differentEvents = this.props.events !== nextProps.events;
-        // const differentSucess = this.props.sucess !== nextProps.sucess;
-        // const differentDone = this.props.done !== nextProps.done
-        // return differentTitle || differentDone;
-        return differentEvents;
-    }
+    // shouldComponentUpdate(nextProps) {
+    //     const differentEvents = this.props.events !== nextProps.events;
+    //     // const differentSucess = this.props.sucess !== nextProps.sucess;
+    //     // const differentDone = this.props.done !== nextProps.done
+    //     // return differentTitle || differentDone;
+    //     return differentEvents;
+    // }
 
     render() {
         const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

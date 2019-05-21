@@ -48,7 +48,7 @@ const Router = ()=> {
             <Route exact path="/profile" component={PrivateRoute(ProfilePage)}/>
             <Route exact path="/myEvents" component={PrivateRoute(MyEventsPage)}/>
             <Route exact path="/events" component={EventPage}/>
-            <Route path="/event/add" component={CreateEvents}/>
+            <Route path="/event/add" component={PrivateRoute(CreateEvents)}/>
             <Route path="/event/:eventid" component={SpecificEvent} />
             <Route component={CheckErrorPage}/>
             </Switch>

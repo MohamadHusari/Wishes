@@ -9,6 +9,7 @@ library.add(faAngleDown);
 class Navbar extends Component {
     constructor() {
         super();
+        this.logoutfunc = this.logoutfunc.bind(this);
         this.Auth = new AuthService();
         this.state={
             show:false
@@ -24,12 +25,17 @@ class Navbar extends Component {
         this.setState({show:!show});
     };
 
-    shouldComponentUpdate(nextProps) {
-        const differentWord = this.props.ChangeNavWord !== nextProps.ChangeNavWord;
-        // const differentDone = this.props.done !== nextProps.done
-        // return differentTitle || differentDone;
-        return differentWord;
-    }
+    logoutfunc = () => {
+        this.Auth.logout();
+        this.props.history.push(`/`);
+    };
+
+    // shouldComponentUpdate(nextProps) {
+    //     const differentWord = this.props.ChangeNavWord !== nextProps.ChangeNavWord;
+    //     // const differentDone = this.props.done !== nextProps.done
+    //     // return differentTitle || differentDone;
+    //     return differentWord;
+    // }
 
     render() {
         // console.log(this.props.location.pathname);
@@ -85,6 +91,8 @@ class Navbar extends Component {
                                             className="sr-only">(current)</span></NavLink>
                                             <NavLink className="dropdown-item" to="/myEvents">{/*console.log(this.Auth.getProfile())*/} My Events <span
                                                 className="sr-only">(current)</span></NavLink>
+                                            <span className="dropdown-item" onClick={this.logoutfunc}>Sign Out
+                                                <span className="sr-only">(current)</span></span>
                                         </div>
                                     </div>
                                     :

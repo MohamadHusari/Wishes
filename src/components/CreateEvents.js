@@ -1,208 +1,221 @@
-import React, { Component } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faMailBulk, faCity } from "@fortawesome/free-solid-svg-icons";
-import * as api from './API'
-import { Alert, Button, Container, Row, Col } from "react-bootstrap";
-import { Form, InputGroup, ToggleButtonGroup, ToggleButton } from "react-bootstrap";
-
+import React, { Component } from 'react';
 import validator, { field } from './validator';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { Form, InputGroup } from "react-bootstrap";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { faChevronRight, faUser, faHeading, faParagraph, faAlignCenter, faCalendarDay, faLocationArrow } from '@fortawesome/free-solid-svg-icons';
+import {toast, ToastContainer} from "react-toastify";
+import AuthService from "./AuthService";
+library.add(faChevronRight, faUser);
 
-export default class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-        event: {
-            category: "",
-            eventTitle: "",
-            when: "",
-            where: ""
-        },
-        error: {
-            category: false,
-            eventTitle: false,
-            when: false,
-            where: false
-        },
-      username: field({value:'', name: 'username', minLength: 2}),
-      category: field({value: '', name: 'category'}),
-      title:    field({value: '', name: 'title', minLength: 10}),
-      date:     field({value: '', name: 'date'}),
-      where:    field({value: '', name: 'where'})
-    //   { value: "", errors: [], valid: true, validations: { isRequired: true} }
-    };
-
-    this.onInputChange = this.onInputChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-  }
-
-  onInputChange({ target: { name, value } }) {
-    console.log(name, value);
-
-    //Each value should be validated each time it changes!
-    //For example: username should be
-    //1- required and
-    //2- more than 2 characters
-
-    //So we did required...
-    //How can we do #2?
-    //How can we know we need to check this value for minimum length?
-    //We need to further change our state...
-
-    this.setState({
-      [name]: {
-        ...this.state[name],
-        value,
-        ...validator(value, name, this.state[name].validations)
-      }
-    });
-  }
-
-  onSubmit(e) {
-    console.log(this.state);
-    
-    
-
-    //Send data to somewhere 
-    //...
-    e.preventDefault();
-  }
-
-  addEventHandler = (e) => {
-    api.addEvent(this.state.event)
-    e.preventDefault()
-
-}
-
-onUpdate = (e) => {
-    if(e.target.value.length < 2){
-        let newError = this.state.error
-        newError[e.target.name] = true
-        this.setState({
-            error: newError
-        })
+class CreateEvents extends Component {
+    constructor() {
+        super();
+        this.onInputChange = this.onInputChange.bind(this);
+        this.handleFormSubmit = this.handleFormSubmit.bind(this);
+        this.Auth = new AuthService();
+        this.state = {
+            title:    field({value: '', name: 'title'}),
+            description:  field({value: '', name: 'description'}),
+            category:   field({value: '', name: 'category'}),
+            date:   field({value: '', name: 'date'}),
+            where:   field({value: '', name: 'where'})
+        };
     }
-    else{
-        let newError = this.state.error
-        newError[e.target.name] = false
+    onInputChange({ target: { name, value } }) {
         this.setState({
-            error: newError
-        })
+            [name]: {
+                ...this.state[name],
+                value,
+                ...validator(value, name, this.state[name].validations)
+            }
+        });
     }
-    let new_event = this.state.event
-    new_event[e.target.name] = e.target.value
-    this.setState({
-        event: new_event
-    })
-    console.log(this.state.event)
-    e.preventDefault()
+    handleFormSubmit(e){
+        e.preventDefault();
+        let isokey = true;
+        const event = Object.assign({},this.state);
+        for(let key in event){
+            const { value, validations } = event[key];
 
-}
+            const { valid, errors } = validator(value, key, validations);
+            // console.log(valid,errors);
+            if(!valid){
+                event[key].valid = valid;
+                event[key].errors = errors;
+                isokey = false;
+            }
+        }
+        this.setState({...event});
 
-  render() {
-
-    return (
-            <Container>
-            <div className="row">
+        if(isokey) {
+            this.Auth.fetch(true, `${this.Auth.domain}/event`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    userid:this.props.user.id,
+                    description:this.state.description.value,
+                    category:this.state.category.value,
+                    date: new Date (this.state.date.value).toISOString(),
+                    where:this.state.where.value,
+                    title:this.state.title.value
+                })
+            })
+                .then(res => {
+                    if (res.sucess === false) {
+                        toast.error(res.err, {containerId: 'A'});
+                    } else {
+                        this.props.history.push(`/event/${res.eventid}`);
+                    }
+                });
+        }
+        // console.log(this.state.username.value);
+    }
+    render(){
+        return(
+            <>
+                <ToastContainer enableMultiContainer containerId={'A'} position={toast.POSITION.BOTTOM_RIGHT} />
+                <div className="container">
+                <div className="row">
                     <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
                         <div className="card card-signin my-5">
                             <div className="card-body">
                                 <h5 className="card-title text-center">Adding a New Event</h5>
                                 <form className="form-signin" onSubmit={this.handleFormSubmit}>
-
-                                    <Form.Group controlId="formControlEmail">
-                                    <Form.Label>Event Category</Form.Label>
-                                    <InputGroup className="mb-3">
-                                        {/* <InputGroup.Prepend>
+                                    <fieldset disabled>
+                                    <Form.Group controlId="formControlUsername">
+                                        <Form.Label>Username</Form.Label>
+                                        <InputGroup className="mb-3">
+                                            <InputGroup.Prepend>
                                         <InputGroup.Text>
                                             <FontAwesomeIcon icon={faUser} />
                                         </InputGroup.Text>
-                                        </InputGroup.Prepend> */}
-                                        <Form.Control
-                                        name="category"
-                                        placeholder="Enter your Event Category"
-                                        aria-label="Username"
-                                        defaultValue={this.state.category.value}
-                                        onBlur={this.onInputChange}
-                                        />
-                                    </InputGroup>
-                                    {this.state.category.errors.map((err, i) => (
-                                        <Form.Text key={i} className="text-danger">
-                                        {err}
-                                        </Form.Text>
-                                    ))}
+                                        </InputGroup.Prepend>
+                                            <Form.Control
+                                                name="username"
+                                                placeholder="Enter your Username"
+                                                aria-label="Username"
+                                                defaultValue={this.props.user.username}
+                                            />
+                                        </InputGroup>
                                     </Form.Group>
-
-                                    <Form.Group controlId="formControlEmail">
-                                    <Form.Label>Event Title</Form.Label>
-                                    <InputGroup className="mb-3">
-                                        {/* <InputGroup.Prepend>
-                                        <InputGroup.Text>
-                                            <FontAwesomeIcon icon={faUser} />
-                                        </InputGroup.Text>
-                                        </InputGroup.Prepend> */}
-                                        <Form.Control
-                                        name="title"
-                                        placeholder="Enter your Event Title"
-                                        aria-label="title"
-                                        defaultValue={this.state.title.value}
-                                        onBlur={this.onInputChange}
-                                        />
-                                    </InputGroup>
-                                    {this.state.title.errors.map((err, i) => (
-                                        <Form.Text key={i} className="text-danger">
-                                        {err}
-                                        </Form.Text>
-                                    ))}
+                                    </fieldset>
+                                    <Form.Group controlId="formControlTitle">
+                                        <Form.Label>Title</Form.Label>
+                                        <InputGroup className="mb-3">
+                                            <InputGroup.Prepend>
+                                                <InputGroup.Text>
+                                                    <FontAwesomeIcon icon={faHeading} />
+                                                </InputGroup.Text>
+                                            </InputGroup.Prepend>
+                                            <Form.Control
+                                                name="title"
+                                                placeholder="Enter your Event title"
+                                                aria-label="title"
+                                                defaultValue={this.state.title.value}
+                                                onBlur={this.onInputChange}
+                                                // onChange={this.handleChange}
+                                            />
+                                        </InputGroup>
+                                        {this.state.title.errors.map((err, i) => (
+                                            <Form.Text key={i} className="text-danger">
+                                                {err}
+                                            </Form.Text>
+                                        ))}
                                     </Form.Group>
-
-                                    <Form.Group controlId="formControlEmail">
-                                    <Form.Label>Date</Form.Label>
-                                    <input type="date" id="date" className="form-control" name="date"
-                                            defaultValue={this.state.date.value}
-                                            onBlur={this.onUpdate}/>
-                                    {this.state.date.errors.map((err, i) => (
-                                        <Form.Text key={i} className="text-danger">
-                                        {err}
-                                        </Form.Text>
-                                    ))}
+                                    <Form.Group controlId="formControlDescription">
+                                        <Form.Label>Description</Form.Label>
+                                        <InputGroup className="mb-3">
+                                            <InputGroup.Prepend>
+                                                <InputGroup.Text>
+                                                    <FontAwesomeIcon icon={faParagraph} />
+                                                </InputGroup.Text>
+                                            </InputGroup.Prepend>
+                                            <Form.Control as="textarea"
+                                                name="description"
+                                                placeholder="Enter your Event description"
+                                                aria-label="description"
+                                                defaultValue={this.state.description.value}
+                                                onBlur={this.onInputChange}
+                                                // onChange={this.handleChange}
+                                            />
+                                        </InputGroup>
+                                        {this.state.description.errors.map((err, i) => (
+                                            <Form.Text key={i} className="text-danger">
+                                                {err}
+                                            </Form.Text>
+                                        ))}
                                     </Form.Group>
-
-                                    <div className="form-group">
-                                        <label htmlFor="date">Hour</label>
-                                        <input type="time" id="when" className="form-control" name="when"
-                                            required onChange={this.handleChange} onBlur={this.onUpdate}/>
-                                    </div>
-
-
-
-                                    <Form.Group controlId="formControlEmail">
-                                    <Form.Label>Where</Form.Label>
-                                    <InputGroup className="mb-3">
-                                        {/* <InputGroup.Prepend>
-                                        <InputGroup.Text>
-                                            <FontAwesomeIcon icon={faUser} />
-                                        </InputGroup.Text>
-                                        </InputGroup.Prepend> */}
-                                        <Form.Control
-                                        name="where"
-                                        placeholder="where is the event ?"
-                                        aria-label="where"
-                                        defaultValue={this.state.where.value}
-                                        onBlur={this.onInputChange}
-                                        />
-                                    </InputGroup>
-                                    {this.state.where.errors.map((err, i) => (
-                                        <Form.Text key={i} className="text-danger">
-                                        {err}
-                                        </Form.Text>
-                                    ))}
+                                    <Form.Group controlId="formControlCategory">
+                                        <Form.Label>Category</Form.Label>
+                                        <InputGroup className="mb-3">
+                                            <InputGroup.Prepend>
+                                                <InputGroup.Text>
+                                                    <FontAwesomeIcon icon={faAlignCenter} />
+                                                </InputGroup.Text>
+                                            </InputGroup.Prepend>
+                                            <Form.Control
+                                                          name="category"
+                                                          placeholder="Enter your Event category"
+                                                          aria-label="category"
+                                                          defaultValue={this.state.category.value}
+                                                          onBlur={this.onInputChange}
+                                                // onChange={this.handleChange}
+                                            />
+                                        </InputGroup>
+                                        {this.state.category.errors.map((err, i) => (
+                                            <Form.Text key={i} className="text-danger">
+                                                {err}
+                                            </Form.Text>
+                                        ))}
                                     </Form.Group>
-
-
-
-
+                                    <Form.Group controlId="formControlDate">
+                                        <Form.Label>Event date and time</Form.Label>
+                                        <InputGroup className="mb-3">
+                                            <InputGroup.Prepend>
+                                                <InputGroup.Text>
+                                                    <FontAwesomeIcon icon={faCalendarDay} />
+                                                </InputGroup.Text>
+                                            </InputGroup.Prepend>
+                                            <Form.Control
+                                                name="date"
+                                                type="datetime-local"
+                                                aria-label="date"
+                                                defaultValue={this.state.date.value}
+                                                onBlur={this.onInputChange}
+                                                // onChange={this.handleChange}
+                                            />
+                                        </InputGroup>
+                                        {this.state.date.errors.map((err, i) => (
+                                            <Form.Text key={i} className="text-danger">
+                                                {err}
+                                            </Form.Text>
+                                        ))}
+                                    </Form.Group>
+                                    <Form.Group controlId="formControlWhere">
+                                        <Form.Label>Where ( place )</Form.Label>
+                                        <InputGroup className="mb-3">
+                                            <InputGroup.Prepend>
+                                                <InputGroup.Text>
+                                                    <FontAwesomeIcon icon={faLocationArrow} />
+                                                </InputGroup.Text>
+                                            </InputGroup.Prepend>
+                                            <Form.Control
+                                                name="where"
+                                                placeholder="Enter your place"
+                                                aria-label="where"
+                                                defaultValue={this.state.where.value}
+                                                onBlur={this.onInputChange}
+                                                // onChange={this.handleChange}
+                                            />
+                                        </InputGroup>
+                                        {this.state.where.errors.map((err, i) => (
+                                            <Form.Text key={i} className="text-danger">
+                                                {err}
+                                            </Form.Text>
+                                        ))}
+                                    </Form.Group>
                                     <button className="btn btn-lg btn-info btn-block text-uppercase"
-                                            type="submit" onClick={(e)=>this.addEventHandler(e)}>Add Event
+                                            type="submit">Add Event
                                     </button>
                                     <hr/>
 
@@ -211,7 +224,10 @@ onUpdate = (e) => {
                         </div>
                     </div>
                 </div>
-            </Container>
-    );
-  }
+            </div>
+        </>
+        )
+    }
 }
+
+export default CreateEvents;

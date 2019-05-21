@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import EditEventModal from './EditEventModal';
 import DeleteEventModal from './DeleteEventModal';
 import ShowMoreModal from './ShowMoreModal';
-import AuthService from "./AuthService";
+// import AuthService from "./AuthService";
 
 class Event extends Component {
     constructor() {

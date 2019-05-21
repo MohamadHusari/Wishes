@@ -3,7 +3,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import AuthService from './AuthService';
 import validator, { field } from './validator';
-import { Form, InputGroup, ToggleButtonGroup, ToggleButton } from "react-bootstrap";
+import { Form, InputGroup} from "react-bootstrap";
 import { faUser, faPassport } from "@fortawesome/free-solid-svg-icons";
 
 
@@ -12,43 +12,59 @@ class SignInForm extends Component {
         super();
         this.state = {
             username:    field({value: '', name: 'username'}),
-            Password:  field({value: '', name: 'Password'}),
-            date:   field({value: '', name: 'date'}),
-            where:   field({value: '', name: 'where'})
-        }
-        this.handleChange = this.handleChange.bind(this);
+            password:  field({value: '', name: 'password'}),
+        };
+        // this.handleChange = this.handleChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.onInputChange = this.onInputChange.bind(this);
         this.Auth = new AuthService();
     }
-    handleChange(e){
-        this.setState(
-            {
-                [e.target.name]: e.target.value
+    // handleChange(e){
+    //     this.setState(
+    //         {
+    //             [e.target.name]: e.target.value
+    //         }
+    //     )
+    // }
+
+    onInputChange({ target: { name, value } }) {
+        this.setState({
+            [name]: {
+                ...this.state[name],
+                value,
+                ...validator(value, name, this.state[name].validations)
             }
-        )
+        });
     }
 
-    onInputChange({ target: { name, value } }) {    
-        this.setState({
-          [name]: {
-            ...this.state[name],
-            value,
-            ...validator(value, name, this.state[name].validations)
-          }
-        });
-      }
 
-      
     handleFormSubmit(e){
         e.preventDefault();
-        this.Auth.login(this.state.username,this.state.password)
-            .then(res =>{
-                this.props.history.replace('/');
-            })
-            .catch(err =>{
-                alert(err);
-            })
+        let isokey = true;
+        const user = Object.assign({},{username:this.state.username, password:this.state.password});
+        for(let key in user){
+            const { value, validations } = user[key];
+
+            const { valid, errors } = validator(value, key, validations);
+            // console.log(valid,errors);
+            if(!valid){
+                user[key].valid = valid;
+                user[key].errors = errors;
+                isokey = false;
+            }
+        }
+        this.setState({...user});
+
+        if(isokey) {
+            this.Auth.login(this.state.username.value,this.state.password.value)
+                .then(res =>{
+                    this.props.history.replace('/');
+                })
+                .catch(err =>{
+                    alert(err);
+                })
+        }
+        // console.log(this.state.username.value);
     }
     componentDidMount() {
         // console.log('signup ,mmm');
@@ -64,49 +80,49 @@ class SignInForm extends Component {
             <>
                 <h5 className="card-title text-center">Sign In</h5>
                 <form className="form-signin" onSubmit={this.handleFormSubmit}>
-                    <Form.Group controlId="formControlEmail">
+                    <Form.Group controlId="formControlUsername">
                         <Form.Label>Username</Form.Label>
                         <InputGroup className="mb-3">
                             <InputGroup.Prepend>
-                            <InputGroup.Text>
-                                <FontAwesomeIcon icon={faUser} />
-                            </InputGroup.Text>
+                                <InputGroup.Text>
+                                    <FontAwesomeIcon icon={faUser} />
+                                </InputGroup.Text>
                             </InputGroup.Prepend>
                             <Form.Control
-                            name="username"
-                            placeholder="Enter your mail"
-                            aria-label="Username"
-                            defaultValue={this.state.username.value}
-                            onBlur={this.onInputChange}
+                                name="username"
+                                placeholder="Enter your username"
+                                aria-label="Username"
+                                defaultValue={this.state.username.value}
+                                onBlur={this.onInputChange}
                             />
                         </InputGroup>
                         {this.state.username.errors.map((err, i) => (
                             <Form.Text key={i} className="text-danger">
-                            {err}
+                                {err}
                             </Form.Text>
                         ))}
                     </Form.Group>
 
-                    <Form.Group controlId="formControlEmail">
+                    <Form.Group controlId="formControlPassword">
                         <Form.Label>Password</Form.Label>
                         <InputGroup className="mb-3">
                             <InputGroup.Prepend>
-                            <InputGroup.Text>
-                                <FontAwesomeIcon icon={faPassport} />
-                            </InputGroup.Text>
+                                <InputGroup.Text>
+                                    <FontAwesomeIcon icon={faPassport} />
+                                </InputGroup.Text>
                             </InputGroup.Prepend>
                             <Form.Control
-                            name="Password"
-                            type="password"
-                            placeholder="Enter your Password"
-                            aria-label="password"
-                            defaultValue={this.state.Password.value}
-                            onBlur={this.onInputChange}
+                                name="password"
+                                type="password"
+                                placeholder="Enter your Password"
+                                aria-label="password"
+                                defaultValue={this.state.password.value}
+                                onBlur={this.onInputChange}
                             />
                         </InputGroup>
-                        {this.state.Password.errors.map((err, i) => (
+                        {this.state.password.errors.map((err, i) => (
                             <Form.Text key={i} className="text-danger">
-                            {err}
+                                {err}
                             </Form.Text>
                         ))}
                     </Form.Group>
