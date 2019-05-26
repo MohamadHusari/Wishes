@@ -1,7 +1,28 @@
 import React , {Component} from 'react';
 import {Modal, Button} from 'react-bootstrap';
+import {field} from "./validator";
+import validator from "./validator";
 
 class EditEventModal extends Component {
+    constructor () {
+        super();
+        this.state = {
+            title:    field({value: '', name: 'title'}),
+            description:  field({value: '', name: 'description'}),
+            category:   field({value: '', name: 'category'}),
+            date:   field({value: '', name: 'date'}),
+            where:   field({value: '', name: 'where'})
+        };
+    }
+    onInputChange({ target: { name, value } }) {
+        this.setState({
+            [name]: {
+                ...this.state[name],
+                value,
+                ...validator(value, name, this.state[name].validations)
+            }
+        });
+    }
     render() {
         const {event} = this.props;
         // const currdate = new Date(event.date);

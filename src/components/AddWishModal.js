@@ -1,5 +1,6 @@
 import React , {Component} from 'react';
 import {Modal, Button} from 'react-bootstrap';
+// import {field} from "./validator";
 
 class AddWishModal extends Component{
     render() {
@@ -14,7 +15,7 @@ class AddWishModal extends Component{
                 >
                     <Modal.Header closeButton>
                         <Modal.Title id="contained-modal-title-vcenter">
-                            Add Wish to Event id : {event.id}
+                            Add Wish to : {event.title.length > 20 ? event.title.substr(0,20)+'...' : event.title}
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>

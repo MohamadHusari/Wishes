@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import AuthService from './AuthService';
 import {toast, ToastContainer} from "react-toastify";
-import ErrorPage from './ErrorPage';
 import Event from './Event';
 import AddWishModal from './AddWishModal';
 import {Button} from 'react-bootstrap';
@@ -216,7 +215,23 @@ class SpecificEvent extends Component{
                     </div>
                     </>
                     :
-                    <ErrorPage/>
+                    <>
+                        <div className="container">
+                            <div className="row">
+                                <div id="loader">
+                                    <div className="dot"></div>
+                                    <div className="dot"></div>
+                                    <div className="dot"></div>
+                                    <div className="dot"></div>
+                                    <div className="dot"></div>
+                                    <div className="dot"></div>
+                                    <div className="dot"></div>
+                                    <div className="dot"></div>
+                                    <div className="lading"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </>
                 }
 
             </>
