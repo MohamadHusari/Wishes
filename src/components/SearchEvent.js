@@ -18,7 +18,7 @@ class SearchEvent extends Component {
                         </li>
                         <li className="nav-item">
                             <a className="nav-link" id="two-tab" data-toggle="tab" href="#two" role="tab"
-                               aria-controls="Two" aria-selected="false">Advantage search</a>
+                               aria-controls="Two" aria-selected="false">Advanced search</a>
                         </li>
                     </ul>
                 </div>
@@ -38,10 +38,27 @@ class SearchEvent extends Component {
                         </div>
                     </div>
                     <div className="tab-pane fade p-3" id="two" role="tabpanel" aria-labelledby="two-tab">
-                        <h5 className="card-title">Tab Card Two</h5>
-                        <p className="card-text">Some quick example text to build on the card title and make
-                            up the bulk of the card's content.</p>
-                        {/*<a href="#" className="btn btn-primary">Go somewhere</a>*/}
+                        <div className="form-group">
+                            <input type="text" id="eventtitle" className="form-control" name="eventtitle"
+                                   placeholder="Event Title" required autoFocus onChange={(e)=>this.props.inputChange(e)} />
+                        </div>
+                        <div className="form-group">
+                            <span className="d-block text-center">From :</span>
+                            <input type="date" id="fromdate" className="form-control" name="fromdate"
+                                   autoFocus onChange={(e)=>this.props.inputChange(e)} />
+                        </div>
+                        <div className="form-group">
+                            <span className="d-block text-center">To :</span>
+                            <input type="date" id="todate" className="form-control" name="todate"
+                                   autoFocus onChange={(e)=>this.props.inputChange(e)} />
+                        </div>
+                        <div className="form-group">
+                            <input type="text" id="eventwhere" className="form-control" name="eventwhere"
+                                   placeholder="Where place" autoFocus onChange={(e)=>this.props.inputChange(e)} />
+                        </div>
+                        <div className="row justify-content-center">
+                            <button className="btn btn-danger" onClick={()=>this.props.advSearch()}><FontAwesomeIcon icon={faSearch}/></button>
+                        </div>
                     </div>
                 </div>
         </>

@@ -5,6 +5,7 @@ import validator, { field } from './validator';
 import { Form, InputGroup } from "react-bootstrap";
 import { faUser, faPassport } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {toast, ToastContainer} from "react-toastify";
 
 
 class SignUpForm extends Component {
@@ -95,23 +96,45 @@ class SignUpForm extends Component {
                 user[key].errors = errors;
                 isokey = false;
             }
-            if(user['password2'])
-            {
-                if(password !== password2){
-                    user[key].errors.push('Passwords is not match try again');
-                    isokey = false;
-                }
-            }
+        }
+        if(password !== password2){
+            user['password2'].errors.push('Passwords is not match try again');
+            user['password'].errors.push('Passwords is not match try again');
+            isokey = false;
         }
         this.setState({...user});
         if(isokey){
+            this.Auth.fetch(true, `${this.Auth.domain}/signup`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    firstname:this.state.firstname.value,
+                    lastname:this.state.lastname.value,
+                    username:this.state.username.value,
+                    password:this.state.password.value,
+                    avatar:this.state.image
 
+                })
+            })
+                .then(res => {
+                    if (res.sucess === false) {
+                        toast.error(res.err, {containerId: 'A'});
+                    } else {
+                        this.Auth.login(this.state.username.value,this.state.password.value)
+                            .then(res =>{
+                                this.props.history.replace('/');
+                            })
+                            .catch(err =>{
+                                toast.error(err, {containerId: 'A'});
+                            })
+                    }
+                });
         }
     };
 
     render() {
         return (
             <>
+                <ToastContainer enableMultiContainer containerId={'A'} position={toast.POSITION.BOTTOM_RIGHT} />
                 <h5 className="card-title text-center">Sign Up</h5>
                 <div className="profile-img">
                     <img className="img-thumbnail"

@@ -11,6 +11,7 @@ class EventPage extends Component {
     constructor() {
         super();
         this.handleSearchbut = this.handleSearchbut.bind(this);
+        this.handleAdvSearchbut = this.handleAdvSearchbut.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.Auth = new AuthService();
         this.state = {
@@ -26,6 +27,36 @@ class EventPage extends Component {
             }
         );
     }
+    handleAdvSearchbut = () => {
+        if (this.state.eventtitle || this.state.fromdate || this.state.todate || this.state.eventwhere) {
+            this.Auth.fetch(true, `${this.Auth.domain}/advsearch`, {
+                method: 'GET',
+                body: JSON.stringify({
+                    title:this.state.eventtitle,
+                    from:this.state.fromdate,
+                    to:this.state.todate,
+                    where:this.state.eventwhere
+                })
+            })
+                .then(res => {
+                    if (res.sucess === false) {
+                        this.setState({
+                            events: [],
+                            usersdetails: []
+                        });
+                        toast.error(res.err, {containerId: 'A'});
+                    } else {
+                        this.setState({
+                            events: [res.event],
+                            usersdetails: [res.user]
+                        })
+                    }
+                })
+        }
+        else {
+            toast.error('Please fill at least one filed', {containerId: 'A'});
+        }
+    };
     // componentDidMount() {
     //     console.log(this.props);
     // }
@@ -75,7 +106,7 @@ class EventPage extends Component {
                     <div className="card mt-2 tab-card">
                         <div className="row">
                             <div className="col-12 col-lg-4 pr-lg-0">
-                                <SearchEvent searchFunc={this.handleSearchbut} inputChange={this.handleChange}/>
+                                <SearchEvent searchFunc={this.handleSearchbut} inputChange={this.handleChange} advSearch={this.handleAdvSearchbut}/>
                             </div>
                             <div className="col-12 col-lg-8 pl-lg-0">
                                 <EventSearchShow1 events={this.state.events} users={this.state.usersdetails}/>

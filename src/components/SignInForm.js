@@ -5,6 +5,7 @@ import AuthService from './AuthService';
 import validator, { field } from './validator';
 import { Form, InputGroup} from "react-bootstrap";
 import { faUser, faPassport } from "@fortawesome/free-solid-svg-icons";
+import {toast, ToastContainer} from "react-toastify";
 
 
 class SignInForm extends Component {
@@ -61,7 +62,7 @@ class SignInForm extends Component {
                     this.props.history.replace('/');
                 })
                 .catch(err =>{
-                    alert(err);
+                    toast.error(err, {containerId: 'A'});
                 })
         }
         // console.log(this.state.username.value);
@@ -78,6 +79,7 @@ class SignInForm extends Component {
     render() {
         return (
             <>
+                <ToastContainer enableMultiContainer containerId={'A'} position={toast.POSITION.BOTTOM_RIGHT} />
                 <h5 className="card-title text-center">Sign In</h5>
                 <form className="form-signin" onSubmit={this.handleFormSubmit}>
                     <Form.Group controlId="formControlUsername">

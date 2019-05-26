@@ -70,7 +70,7 @@ class Navbar extends Component {
                                 <NavLink className="nav-link" to="/events" activeClassName="selected">Events</NavLink>
                             </li>
                             <li className="nav-item">
-                                {/*<NavLink className="nav-link" to="/wishes">Wishes</NavLink>*/}
+                                <NavLink className="nav-link" to="/myEvents" activeClassName="selected">My events</NavLink>
                             </li>
                             <li className="nav-item">
                                 {/*<NavLink className="nav-link" to="/about" tabIndex="-1" aria-disabled="true">About</NavLink>*/}
@@ -91,7 +91,7 @@ class Navbar extends Component {
                                             className="sr-only">(current)</span></NavLink>
                                             <NavLink className="dropdown-item" to="/myEvents">{/*console.log(this.Auth.getProfile())*/} My Events <span
                                                 className="sr-only">(current)</span></NavLink>
-                                            <span className="dropdown-item" onClick={this.logoutfunc}>Sign Out
+                                            <span className="dropdown-item" style={{cursor: 'pointer'}} onClick={this.logoutfunc}>Sign Out
                                                 <span className="sr-only">(current)</span></span>
                                         </div>
                                     </div>
