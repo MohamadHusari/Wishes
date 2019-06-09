@@ -3,7 +3,7 @@
 ##### First Step:
 ###### Install Server-side:
 
-[Server-side Read me](/Server-side/README.md)
+[Server-side Read me](/Server-side)
 ###### Open directory and do: 
 ```
 npm install 
