@@ -5,7 +5,8 @@
 
 [Go to Server-side directory](/Server-side)
 ##
-### Open directory and do: 
+#### Second Step:
+### Open project directory (Wishes folder) and do: 
 ```
 npm install 
 ```

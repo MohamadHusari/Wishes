@@ -1,6 +1,6 @@
 ## Wishes Server-Side
 ##### First Step:
-###### Open directory and do: 
+###### Open Server-side directory and do: 
 ```
 npm install 
 ```
