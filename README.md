@@ -1,7 +1,13 @@
 ## Wishes Website
 
-First Step: 
-### ``
+##### First Step:
+###### Install Server-side:
+
+[Server-side Read me](/Server-side/README.md)
+###### Open directory and do: 
+```
+npm install 
+```
 
 ### `npm start`
 
