@@ -1,8 +1,8 @@
 const cloudinary = require('cloudinary');
 cloudinary.config({
-    cloud_name: 'yallablagan',
-    api_key: '431489319562169',
-    api_secret: 'Gguzi3OxI6FAqsDDK_cM5-nol20'
+    cloud_name: '',
+    api_key: '',
+    api_secret: ''
 });
 
 module.exports = {
